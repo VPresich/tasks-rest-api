@@ -30,15 +30,6 @@ GET http://localhost:port/api/users/current
 Headers
 Authorization: "Bearer token"
  
-5/ 
-PATCH http://localhost:port/api/users
-Headers
-Authorization: "Bearer token"
-Body 
-{
-  "subscription": "business"
-}  
-  /* from enum: ['starter', 'pro', 'business'] */
 
 6/ 
 PATCH http://localhost:port/api/users/avatars

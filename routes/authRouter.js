@@ -2,6 +2,8 @@ import express from 'express';
 import validateBody from '../helpers/validateBody.js';
 import authMiddleware from '../helpers/authMiddleware.js';
 import upload from '../helpers/uploadMiddleware.js';
+import authCtrls from '../controllers/authCtrls/index.js';
+import usersCtrls from '../controllers/usersCtrls/index.js';
 
 import {
   registerSchema,
@@ -9,41 +11,27 @@ import {
   emailSchema,
 } from '../schemas/usersSchemas.js';
 
-import {
-  register,
-  login,
-  logout,
-  verifyEmail,
-  resendVerifyEmail,
-} from '../controllers/authControllers.js';
-
-import {
-  getCurrent,
-  updateAvatar,
-  getAvatar,
-} from '../controllers/usersControllers.js';
-
 const authRouter = express.Router();
 
-authRouter.post('/register', validateBody(registerSchema), register);
+authRouter.post('/register', validateBody(registerSchema), authCtrls.register);
+authRouter.get('/verify/:verificationToken', authCtrls.verifyEmail);
+authRouter.post(
+  '/verify',
+  validateBody(emailSchema),
+  authCtrls.resendVerifyEmail
+);
+authRouter.post('/login', validateBody(loginSchema), authCtrls.login);
+authRouter.post('/logout', authMiddleware, authCtrls.logout);
 
-authRouter.get('/verify/:verificationToken', verifyEmail);
-
-authRouter.post('/verify', validateBody(emailSchema), resendVerifyEmail);
-
-authRouter.post('/login', validateBody(loginSchema), login);
-
-authRouter.post('/logout', authMiddleware, logout);
-
-authRouter.get('/current', authMiddleware, getCurrent);
+authRouter.get('/current', authMiddleware, usersCtrls.getCurrent);
 
 authRouter.patch(
   '/avatars',
   authMiddleware,
   upload.single('avatar'),
-  updateAvatar
+  usersCtrls.updateAvatarGCS
 );
 
-authRouter.get('/avatars', authMiddleware, getAvatar);
+authRouter.get('/avatars', authMiddleware, usersCtrls.getAvatarUrl);
 
 export default authRouter;

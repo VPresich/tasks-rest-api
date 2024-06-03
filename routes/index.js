@@ -7,6 +7,4 @@ const routers = express.Router();
 routers.use('/contacts', contactsRouter);
 routers.use('/users', authRouter);
 
-// routers.use('/auth', authRouter);
-
 export default routers;

@@ -32,9 +32,9 @@ export const register = ctrlWrapper(async (req, res, next) => {
 
   res.status(201).json({
     user: {
-      name,
-      email,
-      avatarURL,
+      name: newUser.name,
+      email: newUser.email,
+      avatarURL: newUser.avatarURL,
     },
   });
 });
@@ -64,9 +64,9 @@ export const login = ctrlWrapper(async (req, res, next) => {
   res.status(200).json({
     token,
     user: {
-      name,
-      email,
-      avatarURL,
+      name: user.name,
+      email: user.email,
+      avatarURL: user.avatarURL,
     },
   });
 });

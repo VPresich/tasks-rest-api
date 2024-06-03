@@ -20,13 +20,13 @@ const authMiddleware = async (req, _, next) => {
       if (!user || user.token !== token) {
         throw HttpError(401);
       }
-      if (!user._id || !user.email || !user.subscription) {
+      if (!user._id || !user.email || !user.name) {
         throw HttpError(401);
       }
       req.user = {
         id: user._id,
+        name: user.name,
         email: user.email,
-        subscription: user.subscription,
         avatarURL: user.avatarURL,
       };
       next();
