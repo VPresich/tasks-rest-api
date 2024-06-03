@@ -11,22 +11,6 @@ export const getCurrent = ctrlWrapper(async (req, res, next) => {
   res.json({ email, subscription, avatarURL });
 });
 
-export const updateSubscription = ctrlWrapper(async (req, res, next) => {
-  const { id } = req.user;
-  const { subscription } = req.body;
-  const updatedUser = await User.findByIdAndUpdate(
-    id,
-    { subscription },
-    { new: true }
-  );
-  if (!updatedUser) {
-    throw HttpError(404);
-  }
-  res
-    .status(200)
-    .json({ email: updatedUser.email, subscription: updatedUser.subscription });
-});
-
 export const updateAvatar = ctrlWrapper(async (req, res, next) => {
   const { id, avatarURL: oldAvatarURL } = req.user;
   const { path: tempUpload, originalname } = req.file;

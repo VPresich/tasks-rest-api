@@ -8,7 +8,7 @@ import ctrlWrapper from '../helpers/ctrlWrapper.js';
 import sendVerificationToken from '../helpers/sendVerificationToken.js';
 
 export const register = ctrlWrapper(async (req, res, next) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   const emailInLowerCase = email.toLowerCase();
   const user = await User.findOne({ email: emailInLowerCase });
   if (user) {
@@ -23,6 +23,7 @@ export const register = ctrlWrapper(async (req, res, next) => {
   await sendVerificationToken(email, verificationToken);
 
   const newUser = await User.create({
+    name,
     email: emailInLowerCase,
     password: hashPassword,
     avatarURL,
@@ -31,8 +32,8 @@ export const register = ctrlWrapper(async (req, res, next) => {
 
   res.status(201).json({
     user: {
+      name,
       email,
-      subscription: newUser.subscription,
       avatarURL,
     },
   });
@@ -63,8 +64,9 @@ export const login = ctrlWrapper(async (req, res, next) => {
   res.status(200).json({
     token,
     user: {
+      name,
       email,
-      subscription: user.subscription,
+      avatarURL,
     },
   });
 });

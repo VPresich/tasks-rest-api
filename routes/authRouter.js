@@ -6,7 +6,6 @@ import upload from '../helpers/uploadMiddleware.js';
 import {
   registerSchema,
   loginSchema,
-  subscriptionSchema,
   emailSchema,
 } from '../schemas/usersSchemas.js';
 
@@ -20,7 +19,6 @@ import {
 
 import {
   getCurrent,
-  updateSubscription,
   updateAvatar,
   getAvatar,
 } from '../controllers/usersControllers.js';
@@ -38,13 +36,6 @@ authRouter.post('/login', validateBody(loginSchema), login);
 authRouter.post('/logout', authMiddleware, logout);
 
 authRouter.get('/current', authMiddleware, getCurrent);
-
-authRouter.patch(
-  '/',
-  validateBody(subscriptionSchema),
-  authMiddleware,
-  updateSubscription
-);
 
 authRouter.patch(
   '/avatars',
