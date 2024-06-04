@@ -7,7 +7,7 @@ import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 const deleteBoard = ctrlWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { id: userId } = req.user;
-
+  console.log(id);
   const removedBoard = await Board.findById(id);
   if (!removedBoard) {
     throw HttpError(404);
@@ -17,10 +17,12 @@ const deleteBoard = ctrlWrapper(async (req, res, next) => {
     throw HttpError(403, 'You are not authorized to remove this board');
   }
 
-  const columns = await Column.find({ id });
+  const columns = await Column.find({ board: id });
+  console.log(columns);
   const taskIds = columns.flatMap(column => column.cards);
+  console.log(taskIds);
   await Task.deleteMany({ _id: { $in: taskIds } });
-  await Column.deleteMany({ id });
+  await Column.deleteMany({ board: id });
   await Board.findByIdAndDelete(id);
   res.status(200).json(removedBoard);
 });

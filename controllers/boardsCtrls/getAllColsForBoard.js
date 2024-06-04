@@ -6,7 +6,7 @@ import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 const getAllColsForBoard = ctrlWrapper(async (req, res, next) => {
   const { boardId } = req.params;
   const { id: userId } = req.user;
-  console.log(boardId);
+
   // Find the board to check the owner
   const board = await Board.findById(boardId);
   if (!board) {
