@@ -84,37 +84,3 @@ async function resizeImage(imagePath, width, height) {
   await image.resize(width, height);
   await image.writeAsync(imagePath);
 }
-
-export const editProfile = ctrlWrapper(async (req, res, next) => {
-  const { name, email, password, avatar } = req.body;
-  const userId = req.user.id; // Припустимо, що id користувача доступно через req.user
-
-  // Опціонально: перевірка чи користувач вже існує за новою email
-  const existingUser = await User.findOne({ email });
-  if (existingUser && existingUser.id !== userId) {
-    throw new HttpError(409, 'Email already in use');
-  }
-
-  // Опціонально: якщо користувач хоче змінити пароль, його потрібно хешувати
-  let hashPassword = null;
-  if (password) {
-    hashPassword = await bcrypt.hash(password, 10);
-  }
-
-  // Здійснення змін в базі даних
-  const updatedUserData = {};
-  if (name) updatedUserData.name = name;
-  if (email) updatedUserData.email = email;
-  if (hashPassword) updatedUserData.password = hashPassword;
-  if (avatar) updatedUserData.avatar = avatar; // Припустимо, що зміну аватара можливо зберігати як URL
-
-  const updatedUser = await User.findByIdAndUpdate(userId, updatedUserData, {
-    new: true,
-  });
-
-  // Повернення оновлених даних користувача у відповідь
-  res.status(200).json({
-    message: 'Profile updated successfully',
-    user: updatedUser,
-  });
-});

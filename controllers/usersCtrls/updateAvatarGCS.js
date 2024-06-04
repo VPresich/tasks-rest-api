@@ -8,23 +8,12 @@ import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 import { uploadFileToGCS } from '../../helpers/upload.js';
 
 const updateAvatarGCS = ctrlWrapper(async (req, res, next) => {
-  const { id, avatarURL: oldAvatarURL } = req.user;
+  const { id } = req.user;
   const { path: tempUpload, originalname } = req.file;
-
-  // Create unique avatars name for the user
-  const gcsFileName = `${id}avatar${path.extname(originalname)}`;
-
-  // Avatars name with full path
-  const gcsPath = 'avatars/' + gcsFileName;
 
   // Change size of the user file
   await resizeImage(tempUpload, 250, 250);
-
-  // upload to ToGCS
-  let avatarURL = await uploadFileToGCS(tempUpload, gcsPath);
-  avatarURL = `https://storage.cloud.google.com/${process.env.GOOGLE_BUCKET_NAME}/${gcsPath}`;
-  await deleteAvatar(tempUpload);
-
+  const avatarURL = await saveFilesToStorage(tempUpload, id, 'avatars/');
   // Change field in DB
   const updatedUser = await User.findByIdAndUpdate(
     id,
@@ -39,21 +28,36 @@ const updateAvatarGCS = ctrlWrapper(async (req, res, next) => {
   });
 });
 
-async function deleteAvatar(oldAvatarURL) {
-  if (oldAvatarURL && !oldAvatarURL.includes('gravatar')) {
-    const oldAvatarFullName = path.resolve('public', oldAvatarURL);
-
-    try {
-      await fs.access(oldAvatarFullName);
-      await fs.unlink(oldAvatarFullName);
-    } catch (error) {}
-  }
+async function deleteFile(fileURL) {
+  try {
+    await fs.access(fileURL);
+    await fs.unlink(fileURL);
+  } catch (error) {}
 }
 
-async function resizeImage(imagePath, width, height) {
+export async function resizeImage(imagePath, width, height) {
   const image = await Jimp.read(imagePath);
   await image.resize(width, height);
   await image.writeAsync(imagePath);
+}
+
+export async function saveFilesToStorage(tempUpload, id, subPath) {
+  // Create unique file name for the user
+  const gcsFileName = `${id}avatar${path.extname(tempUpload)}`;
+
+  // Avatars name with full path
+  const gcsPath = subPath + gcsFileName;
+  try {
+    // upload to ToGCS
+    let fileURL = await uploadFileToGCS(tempUpload, gcsPath);
+    fileURL = `https://storage.cloud.google.com/${process.env.GOOGLE_BUCKET_NAME}/${gcsPath}`;
+
+    // delete temp file
+    await deleteFile(tempUpload);
+    return fileURL;
+  } catch (error) {
+    throw new Error('Failed to update avatar in storage');
+  }
 }
 
 export default updateAvatarGCS;

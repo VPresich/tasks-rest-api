@@ -9,6 +9,7 @@ import {
   registerSchema,
   loginSchema,
   emailSchema,
+  profileSchema,
 } from '../schemas/usersSchemas.js';
 
 const authRouter = express.Router();
@@ -24,6 +25,14 @@ authRouter.post('/login', validateBody(loginSchema), authCtrls.login);
 authRouter.post('/logout', authMiddleware, authCtrls.logout);
 
 authRouter.get('/current', authMiddleware, usersCtrls.getCurrent);
+
+authRouter.patch(
+  '/',
+  authMiddleware,
+  validateBody(profileSchema),
+  upload.single('avatar'),
+  usersCtrls.updateProfile
+);
 
 authRouter.patch(
   '/avatars',

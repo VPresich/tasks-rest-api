@@ -15,3 +15,14 @@ export const loginSchema = Joi.object({
   email: Joi.string().required().pattern(EMAIL_PATTERN),
   password: Joi.string().required().min(6),
 });
+
+export const profileSchema = Joi.object({
+  name: Joi.string().optional().pattern(NAME_PATTERN),
+  email: Joi.string().email().optional().pattern(EMAIL_PATTERN),
+  password: Joi.string().min(6).optional(),
+  avatar: Joi.any().optional(),
+});
+// .or('name', 'email', 'password', 'avatar')
+// .messages({
+//   'object.missing': 'At least one field must be specified for profile update',
+// });
