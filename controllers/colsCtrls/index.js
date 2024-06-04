@@ -1,13 +1,8 @@
-import createBoard from './createColumn.js';
-import deleteBoard from './deleteColumn.js';
-import getOneBoard from './getOneColumn.js';
-import getAllBoards from './getAllBoards.js';
-import updateBoardBackGround from './updateColumn.js';
+import getAllCols from '../boardsCtrls/getAllColsForBoard.js';
+import createColumn from './createColumn.js';
+import deleteColumn from './deleteColumn.js';
 
 export default {
-  createBoard,
-  deleteBoard,
-  getOneBoard,
-  getAllBoards,
-  updateBoardBackGround,
+  createColumn,
+  deleteColumn,
 };

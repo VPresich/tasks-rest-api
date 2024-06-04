@@ -1,19 +1,40 @@
+import Task from '../../models/task.js';
+import Column from '../../models/column.js';
 import Board from '../../models/board.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 
-const deleteBoard = ctrlWrapper(async (req, res, next) => {
-  const { id } = req.params;
+const deleteColumn = ctrlWrapper(async (req, res, next) => {
+  const { id } = req.params; //id column
   const { id: userId } = req.user;
-  const removedBoard = await Board.findByIdAndDelete(id);
-  if (!removedBoard) {
-    throw HttpError(404);
+
+  // Find the column to be removed
+  const removedColumn = await Column.findById(id);
+  if (!removedColumn) {
+    throw HttpError(404, 'Column not found');
   }
-  if (!userId.equals(removedBoard.owner)) {
-    throw HttpError(403, 'You are not authorized to remove this board');
+
+  const { boardId } = removedColumn;
+
+  // Find the board to check the owner
+  const board = await Board.findById(boardId);
+  if (!board) {
+    throw HttpError(404, 'Board not found');
   }
-  //TODO REMOVE COLUMNS and TASKS
-  res.status(200).json(removedBoard);
+
+  // Ensure the user is authorized to delete this column
+  if (!userId.equals(board.owner)) {
+    throw HttpError(403, 'You are not authorized to remove this column');
+  }
+
+  // Delete tasks associated with the column
+  await Task.deleteMany({ columnId: id });
+
+  // Delete the column
+  await Column.findByIdAndDelete(id);
+
+  // Send response with the deleted column details
+  res.status(200).json(removedColumn);
 });
 
-export default deleteBoard;
+export default deleteColumn;

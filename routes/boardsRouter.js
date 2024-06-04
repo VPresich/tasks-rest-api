@@ -1,6 +1,5 @@
 import express from 'express';
 import validateBody from '../helpers/validateBody.js';
-import validateId from '../helpers/validateId.js';
 import boardsCtrl from '../controllers/boardsCtrls/index.js';
 
 import authMiddleware from '../helpers/authMiddleware.js';
@@ -14,6 +13,18 @@ boardsRouter.get('/:id', authMiddleware, boardsCtrl.getOneBoard);
 boardsRouter.delete('/:id', authMiddleware, boardsCtrl.deleteBoard);
 
 boardsRouter.post('/', authMiddleware, boardsCtrl.createBoard);
+
+boardsRouter.get(
+  '/:boardId/columns',
+  authMiddleware,
+  boardsCtrl.getAllColsForBoard
+);
+
+boardsRouter.post(
+  '/:boardId/columns',
+  authMiddleware,
+  boardsCtrl.createColumnForBoard
+);
 
 boardsRouter.patch(
   '/:id/background',

@@ -19,7 +19,7 @@ const taskSchema = new Schema(
       type: Date,
       default: null,
     },
-    columnId: {
+    column: {
       type: Schema.Types.ObjectId,
       ref: 'Column',
       required: true,

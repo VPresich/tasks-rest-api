@@ -7,7 +7,7 @@ const columnSchema = new Schema(
       required: true,
     },
 
-    boardId: {
+    board: {
       type: Schema.Types.ObjectId,
       ref: 'Board',
       required: true,

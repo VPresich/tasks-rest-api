@@ -7,7 +7,7 @@ const getOneBoard = ctrlWrapper(async (req, res, next) => {
   const { id: userId } = req.user;
   const board = await Board.findById(id).populate(
     'owner',
-    '_id name email subscription'
+    '_id name email avatarUrl'
   );
   if (!board) {
     throw HttpError(404);
