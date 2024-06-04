@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import gravatar from 'gravatar';
 import crypto from 'node:crypto';
@@ -29,7 +30,15 @@ const register = ctrlWrapper(async (req, res, next) => {
     verificationToken,
   });
 
+  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+    expiresIn: 60 * 60,
+  });
+
+  newUser.token = token;
+  await newUser.save();
+
   res.status(201).json({
+    token,
     user: {
       name: newUser.name,
       email: newUser.email,

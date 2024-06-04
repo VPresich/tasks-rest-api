@@ -13,9 +13,9 @@ const login = ctrlWrapper(async (req, res, next) => {
     throw HttpError(401, 'Email or password is wrong');
   }
 
-  if (!user.verify) {
-    throw HttpError(401, 'Your account is not verified');
-  }
+  // if (!user.verify) {
+  //   throw HttpError(401, 'Your account is not verified');
+  // }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
@@ -25,6 +25,7 @@ const login = ctrlWrapper(async (req, res, next) => {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: 60 * 60,
   });
+
   await User.findByIdAndUpdate(user._id, { token });
   res.status(200).json({
     token,

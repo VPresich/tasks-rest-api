@@ -243,3 +243,9 @@ ResponseBody: {
 }
 
 Як альтернативу SendGrid можна використовувати пакет nodemailer
+
+post: /boards
+{
+    "title": "My board",
+    "background":"No"
+}
