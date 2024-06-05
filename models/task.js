@@ -16,7 +16,7 @@ const taskSchema = new Schema(
       default: 'Low',
     },
     deadline: {
-      type: Date,
+      type: String,
       default: null,
     },
     column: {

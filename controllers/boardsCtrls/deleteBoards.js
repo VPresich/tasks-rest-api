@@ -7,7 +7,7 @@ import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 const deleteBoard = ctrlWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { id: userId } = req.user;
-  console.log(id);
+
   const removedBoard = await Board.findById(id);
   if (!removedBoard) {
     throw HttpError(404);

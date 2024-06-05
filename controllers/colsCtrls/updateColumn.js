@@ -1,20 +1,16 @@
-import Board from '../../models/board.js';
+import Column from '../../models/column.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 
-const updateBoardBackGround = ctrlWrapper(async (req, res, next) => {
+const updateColumn = ctrlWrapper(async (req, res, next) => {
   const { id } = req.params;
-  const { id: userId } = req.user;
-  const updatedBoard = await Board.findByIdAndUpdate(id, req.body, {
+  const updatedColumn = await Column.findByIdAndUpdate(id, req.body, {
     new: true,
   });
-  if (!updatedBoard) {
+  if (!updatedColumn) {
     throw HttpError(404);
   }
-  if (!userId.equals(updatedBoard.owner)) {
-    throw HttpError(403, 'You are not authorized to update this board');
-  }
-  res.status(200).json(updatedBoard);
+  res.status(200).json(updatedColumn);
 });
 
-export default updateBoardBackGround;
+export default updateColumn;

@@ -5,35 +5,15 @@ import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 
 const deleteColumn = ctrlWrapper(async (req, res, next) => {
-  const { id } = req.params; //id column
-  const { id: userId } = req.user;
-
-  // Find the column to be removed
-  const removedColumn = await Column.findById(id);
-  if (!removedColumn) {
-    throw HttpError(404, 'Column not found');
-  }
-
-  const { boardId } = removedColumn;
-
-  // Find the board to check the owner
-  const board = await Board.findById(boardId);
-  if (!board) {
-    throw HttpError(404, 'Board not found');
-  }
-
-  // Ensure the user is authorized to delete this column
-  if (!userId.equals(board.owner)) {
-    throw HttpError(403, 'You are not authorized to remove this column');
-  }
+  const { id } = req.params; // checked in middleware
 
   // Delete tasks associated with the column
-  await Task.deleteMany({ columnId: id });
+  await Task.deleteMany({ column: id });
 
   // Delete the column
-  await Column.findByIdAndDelete(id);
+  const removedColumn = await Column.findByIdAndDelete(id);
 
-  // Send response with the deleted column details
+  // Send response with the deleted column
   res.status(200).json(removedColumn);
 });
 

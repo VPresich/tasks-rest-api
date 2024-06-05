@@ -6,6 +6,7 @@ import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 const createColumnForBoard = ctrlWrapper(async (req, res, next) => {
   const { boardId } = req.params;
   const { id: userId } = req.user;
+
   // Check if the board exists
   const board = await Board.findById(boardId);
   if (!board) {
