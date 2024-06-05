@@ -1,5 +1,4 @@
 import Board from '../../models/board.js';
-import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 
 const createBoard = ctrlWrapper(async (req, res, next) => {

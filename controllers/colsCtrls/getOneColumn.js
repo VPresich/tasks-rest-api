@@ -1,6 +1,4 @@
 import Column from '../../models/column.js';
-import Board from '../../models/board.js';
-import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 
 const getOneColumn = ctrlWrapper(async (req, res, next) => {
