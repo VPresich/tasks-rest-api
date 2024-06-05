@@ -20,7 +20,7 @@ const register = ctrlWrapper(async (req, res, next) => {
 
   const verificationToken = crypto.randomUUID();
 
-  await sendVerificationToken(email, verificationToken);
+  //await sendVerificationToken(email, verificationToken);
 
   const newUser = await User.create({
     name,

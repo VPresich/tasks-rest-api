@@ -28,13 +28,6 @@ columnsRouter.patch(
   colsCtrl.updateColumn
 );
 
-columnsRouter.get(
-  '/:id/tasks',
-  authMiddleware,
-  checkColumnAndBoard,
-  colsCtrl.getAllTasksForColumn
-);
-
 columnsRouter.post(
   '/:id/tasks',
   authMiddleware,
