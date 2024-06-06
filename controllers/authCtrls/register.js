@@ -6,7 +6,7 @@ import User from '../../models/user.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 import sendVerificationToken from '../../helpers/sendVerificationToken.js';
-import { PATH_DEF_AVATAR } from '../../helpers/constants.js';
+import { PATH_DEF_LIGHT_AVATAR } from '../../helpers/constants.js';
 
 const register = ctrlWrapper(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -18,7 +18,7 @@ const register = ctrlWrapper(async (req, res, next) => {
   const hashPassword = await bcrypt.hash(password, 10);
 
   //const avatarURL = gravatar.url(email);
-  const avatarURL = PATH_DEF_AVATAR;
+  const avatarURL = PATH_DEF_LIGHT_AVATAR;
   const verificationToken = crypto.randomUUID();
 
   //await sendVerificationToken(email, verificationToken);
