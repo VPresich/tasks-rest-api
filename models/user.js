@@ -43,6 +43,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Verify token is required'],
     },
+
+    theme: {
+      type: String,
+      enum: ['Light', 'Violet', 'Dark'],
+      default: 'Light',
+    },
   },
   { versionKey: false, timestamps: true }
 );

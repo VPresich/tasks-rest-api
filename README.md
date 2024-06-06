@@ -189,3 +189,10 @@ Body
 DELETE http://localhost:port/api/tasks/:id
 Headers
 Authorization: "Bearer token"
+
+
+{
+ "name": "qqqqqq",
+ "email": "qqq@qqq.com",
+ "password": "qqqqqq"
+}

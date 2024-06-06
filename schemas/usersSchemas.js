@@ -26,3 +26,7 @@ export const profileSchema = Joi.object({
 // .messages({
 //   'object.missing': 'At least one field must be specified for profile update',
 // });
+
+export const themeSchema = Joi.object({
+  theme: Joi.string().valid('Light', 'Violet', 'Dark').required(),
+});

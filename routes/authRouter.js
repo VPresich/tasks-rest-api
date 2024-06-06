@@ -4,12 +4,12 @@ import authMiddleware from '../helpers/authMiddleware.js';
 import upload from '../helpers/uploadMiddleware.js';
 import authCtrls from '../controllers/authCtrls/index.js';
 import usersCtrls from '../controllers/usersCtrls/index.js';
-
 import {
   registerSchema,
   loginSchema,
   emailSchema,
   profileSchema,
+  themeSchema,
 } from '../schemas/usersSchemas.js';
 
 const authRouter = express.Router();
@@ -42,5 +42,13 @@ authRouter.patch(
 );
 
 authRouter.get('/avatars', authMiddleware, usersCtrls.getAvatarUrl);
+
+authRouter.patch(
+  '/themes',
+  authMiddleware,
+  validateBody(themeSchema),
+  usersCtrls.updateTheme
+);
+authRouter.get('/themes', authMiddleware, usersCtrls.getTheme);
 
 export default authRouter;
