@@ -6,13 +6,15 @@ import User from '../../models/user.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 import { uploadFileToGCS } from '../../helpers/upload.js';
+import { CLOUD_STORAGE } from '../../helpers/constants.js';
+import { AVATAR_SIZE_1 } from '../../helpers/constants.js';
 
 const updateAvatarGCS = ctrlWrapper(async (req, res, next) => {
   const { id } = req.user;
   const { path: tempUpload, originalname } = req.file;
 
   // Change size of the user file
-  await resizeImage(tempUpload, 250, 250);
+  await resizeImage(tempUpload, AVATAR_SIZE_1, AVATAR_SIZE_1);
   const avatarURL = await saveFilesToStorage(tempUpload, id, 'avatars/');
   // Change field in DB
   const updatedUser = await User.findByIdAndUpdate(
@@ -50,7 +52,7 @@ export async function saveFilesToStorage(tempUpload, id, subPath) {
   try {
     // upload to ToGCS
     let fileURL = await uploadFileToGCS(tempUpload, gcsPath);
-    fileURL = `https://storage.cloud.google.com/${process.env.GOOGLE_BUCKET_NAME}/${gcsPath}`;
+    fileURL = `${CLOUD_STORAGE}${process.env.GOOGLE_BUCKET_NAME}/${gcsPath}`;
 
     // delete temp file
     await deleteFile(tempUpload);

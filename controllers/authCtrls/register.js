@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import gravatar from 'gravatar';
+//import gravatar from 'gravatar';
 import crypto from 'node:crypto';
 import User from '../../models/user.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 import sendVerificationToken from '../../helpers/sendVerificationToken.js';
+import { PATH_DEF_AVATAR } from '../../helpers/constants.js';
 
 const register = ctrlWrapper(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -16,8 +17,8 @@ const register = ctrlWrapper(async (req, res, next) => {
   }
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const avatarURL = gravatar.url(email);
-
+  //const avatarURL = gravatar.url(email);
+  const avatarURL = PATH_DEF_AVATAR;
   const verificationToken = crypto.randomUUID();
 
   //await sendVerificationToken(email, verificationToken);
@@ -31,7 +32,7 @@ const register = ctrlWrapper(async (req, res, next) => {
   });
 
   const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-    expiresIn: 60 * 60,
+    expiresIn: '24h',
   });
 
   newUser.token = token;

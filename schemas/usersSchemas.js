@@ -21,12 +21,8 @@ export const profileSchema = Joi.object({
   email: Joi.string().email().optional().pattern(EMAIL_PATTERN),
   password: Joi.string().min(6).optional(),
   avatar: Joi.any().optional(),
-});
-// .or('name', 'email', 'password', 'avatar')
-// .messages({
-//   'object.missing': 'At least one field must be specified for profile update',
-// });
+}).unknown(false);
 
 export const themeSchema = Joi.object({
-  theme: Joi.string().valid('Light', 'Violet', 'Dark').required(),
+  theme: Joi.string().valid('light', 'violet', 'dark').insensitive().required(),
 });

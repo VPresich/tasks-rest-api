@@ -9,7 +9,7 @@ const updateTheme = ctrlWrapper(async (req, res) => {
   if (!user) {
     throw HttpError(404, 'User not found');
   }
-  user.theme = theme;
+  user.theme = theme.toLowerCase();
   await user.save();
   res.json({ user });
 });

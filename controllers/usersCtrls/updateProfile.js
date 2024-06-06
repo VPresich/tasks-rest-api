@@ -3,6 +3,7 @@ import User from '../../models/user.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 import { saveFilesToStorage, resizeImage } from './updateAvatarGCS.js';
+import { AVATAR_SIZE_1 } from '../../helpers/constants.js';
 
 export const updateProfile = ctrlWrapper(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -22,7 +23,7 @@ export const updateProfile = ctrlWrapper(async (req, res, next) => {
 
   let avatarURL = '';
   if (tempUpload) {
-    await resizeImage(tempUpload, 250, 250);
+    await resizeImage(tempUpload, AVATAR_SIZE_1, AVATAR_SIZE_1);
     avatarURL = await saveFilesToStorage(tempUpload, id, 'avatars/');
   }
 

@@ -5,6 +5,7 @@ import fs from 'node:fs/promises';
 import User from '../../models/user.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
+import { AVATAR_SIZE_1 } from '../../helpers/constants.js';
 
 const updateAvatar = ctrlWrapper(async (req, res, next) => {
   const { id, avatarURL: oldAvatarURL } = req.user;
@@ -19,7 +20,7 @@ const updateAvatar = ctrlWrapper(async (req, res, next) => {
   const resultUpload = path.resolve(avatarsDir, avatarName);
 
   // Change size of the user file
-  await resizeImage(tempUpload, 250, 250);
+  await resizeImage(tempUpload, AVATAR_SIZE_1, AVATAR_SIZE_1);
 
   // Delete old avatar from dir
   await deleteAvatar(oldAvatarURL);

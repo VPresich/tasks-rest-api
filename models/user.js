@@ -46,8 +46,9 @@ const userSchema = new mongoose.Schema(
 
     theme: {
       type: String,
-      enum: ['Light', 'Violet', 'Dark'],
-      default: 'Light',
+      enum: ['light', 'violet', 'dark'],
+      default: 'light',
+      lowercase: true,
     },
   },
   { versionKey: false, timestamps: true }
