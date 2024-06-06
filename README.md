@@ -191,8 +191,8 @@ Headers
 Authorization: "Bearer token"
 
 
-{
- "name": "qqqqqq",
- "email": "qqq@qqq.com",
- "password": "qqqqqq"
-}
+
+CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@dirtbd4yk
+
+
+
