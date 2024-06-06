@@ -38,7 +38,7 @@ authRouter.patch(
   '/avatars',
   authMiddleware,
   upload.single('avatar'),
-  usersCtrls.updateAvatarGCS
+  usersCtrls.updateAvatarCloudinary
 );
 
 authRouter.get('/avatars', authMiddleware, usersCtrls.getAvatarUrl);

@@ -2,11 +2,12 @@ import bcrypt from 'bcrypt';
 import User from '../../models/user.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
-import { saveFilesToStorage, resizeImage } from './updateAvatarGCS.js';
+import { uploadFileToCloudinary } from '../../helpers/uploadCloudinary.js';
 import { AVATAR_SIZE_1 } from '../../helpers/constants.js';
+import { deleteFile } from '../../helpers/imageUtiles.js';
 
 export const updateProfile = ctrlWrapper(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, theme } = req.body;
   console.log('NAME:', name);
   const { id } = req.user;
   const { path: tempUpload } = req.file;
@@ -20,13 +21,18 @@ export const updateProfile = ctrlWrapper(async (req, res, next) => {
   if (password) {
     hashPassword = await bcrypt.hash(password, 10);
   }
-
+  const fileName = `${id}avatar`;
+  const folder = 'avatars';
   let avatarURL = '';
   if (tempUpload) {
-    await resizeImage(tempUpload, AVATAR_SIZE_1, AVATAR_SIZE_1);
-    avatarURL = await saveFilesToStorage(tempUpload, id, 'avatars/');
+    avatarURL = await uploadFileToCloudinary(
+      tempUpload,
+      fileName,
+      folder,
+      AVATAR_SIZE_1
+    );
   }
-
+  await deleteFile(tempUpload);
   const updatedUserData = {};
   if (name) updatedUserData.name = name;
   if (email) updatedUserData.email = email;
@@ -38,7 +44,10 @@ export const updateProfile = ctrlWrapper(async (req, res, next) => {
   });
 
   res.status(200).json({
-    updatedUser,
+    name: updatedUser.name,
+    email: updatedUser.email,
+    avatarURL: updatedUser.avatarURL,
+    theme: updatedUser.theme,
   });
 });
 

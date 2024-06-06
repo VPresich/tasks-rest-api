@@ -8,6 +8,7 @@ import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 import { uploadFileToGCS } from '../../helpers/upload.js';
 import { CLOUD_STORAGE } from '../../helpers/constants.js';
 import { AVATAR_SIZE_1 } from '../../helpers/constants.js';
+import { resizeImage } from '../../helpers/imageUtiles.js';
 
 const updateAvatarGCS = ctrlWrapper(async (req, res, next) => {
   const { id } = req.user;
@@ -29,19 +30,6 @@ const updateAvatarGCS = ctrlWrapper(async (req, res, next) => {
     avatarURL,
   });
 });
-
-async function deleteFile(fileURL) {
-  try {
-    await fs.access(fileURL);
-    await fs.unlink(fileURL);
-  } catch (error) {}
-}
-
-export async function resizeImage(imagePath, width, height) {
-  const image = await Jimp.read(imagePath);
-  await image.resize(width, height);
-  await image.writeAsync(imagePath);
-}
 
 export async function saveFilesToStorage(tempUpload, id, subPath) {
   // Create unique file name for the user
