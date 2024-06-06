@@ -5,6 +5,7 @@ import tasksRouter from './tasksRouter.js';
 import authRouter from './authRouter.js';
 import themesRouter from './themesRouter.js';
 import helpRouter from './helpRouter.js';
+import docRouter from './docs.js';
 
 const routers = express.Router();
 
@@ -14,5 +15,6 @@ routers.use('/users', authRouter);
 routers.use('/themes', themesRouter);
 routers.use('/tasks', tasksRouter);
 routers.use('/help', helpRouter);
+routers.use('/docs', docRouter);
 
 export default routers;
