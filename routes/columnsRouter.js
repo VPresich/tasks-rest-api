@@ -35,4 +35,11 @@ columnsRouter.post(
   colsCtrl.createTaskForColumn
 );
 
+columnsRouter.get(
+  '/:id/tasks',
+  authMiddleware,
+  checkColumnAndBoard,
+  colsCtrl.getAllTasksForColumn
+);
+
 export default columnsRouter;

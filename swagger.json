@@ -1,0 +1,605 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "2.0.2",
+    "title": "API for React Task Pro application",
+    "description": "REST API for managing users, boards, columns, tasks in React Task Pro application",
+    "license": {
+      "name": "GoIt - Final project",
+      "url": "https://github.com/VPresich/react-task-pro"
+    }
+  },
+  "consumes": ["multipart/form-data", "application/json"],
+  "produces": ["application/json"],
+  "servers": [{ "url": "http://localhost:3000/api" }],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Users authorization endpoints. Register a new user using name, email, and password."
+    },
+    {
+      "name": "Boards",
+      "description": "Create, delete, "
+    },
+    {
+      "name": "Columns",
+      "description": "Create, delete, "
+    },
+    {
+      "name": "Tasks",
+      "description": "Create, delete, "
+    },
+    {
+      "name": "Support",
+      "description": "Create, delete, "
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful registration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponce"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Email in use",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User login",
+        "parameters": [],
+        "requestBody": {
+          "description": "User login credentials",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponce"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "'Email or password is wrong'",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User logout",
+
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Update information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "email": {
+                "$ref": "#/components/schemas/UserRegistration/properties/email"
+              },
+              "password": {
+                "$ref": "#/components/schemas/UserRegistration/properties/password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful logout",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Refresh user by tocken",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful refresh",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/avatar": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get user avatar Url",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful registration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "avatarUrl": "User's avatar"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/avatars": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update avatar of current user",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Update avatar",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAvatarRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "avatarUrl": "User's avatar"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user information",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Update information",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAvatarRequest"
+              },
+              "name": {
+                "$ref": "#/components/schemas/UserRegistration/properties/name"
+              },
+              "email": {
+                "$ref": "#/components/schemas/UserRegistration/properties/email"
+              },
+              "password": {
+                "$ref": "#/components/schemas/UserRegistration/properties/password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRegistrationResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/themes": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user theme",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Update theme",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "theme": "User's theme"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "avatarUrl": "User's avatar"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/boards": {
+      "get": {
+        "tags": ["Boards"],
+        "summary": "Get all boards",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Board"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/boards/:id": {
+      "get": {
+        "tags": ["Boads"],
+        "summary": "Get all boads",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+
+        "requestBody": {
+          "description": "Update theme",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "theme": "User's theme"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "avatarUrl": "User's avatar"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    },
+
+    "/boards/:id/columns": {
+      "delete": {
+        "tags": ["Boads"],
+        "summary": "Get all boads",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+
+        "requestBody": {
+          "description": "Update theme",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "theme": "User's theme"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "avatarUrl": "User's avatar"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password"
+          }
+        }
+      },
+
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Access token"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User's avatar URL"
+          },
+          "theme": {
+            "type": "string",
+            "description": "User's theme"
+          }
+        }
+      },
+
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "UpdateAvatarRequest": {
+        "type": "object",
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "format": "binary",
+            "description": "User's avatar file"
+          }
+        },
+        "required": ["avatar"]
+      },
+
+      "Board": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the board"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the board"
+          },
+          "owner": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier of the owner"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the owner"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "Email of the owner"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "description": "URL of the owner's avatar"
+              },
+              "theme": {
+                "type": "string",
+                "theme": "User theme"
+              }
+            },
+            "description": "Information about the owner of the board"
+          }
+        }
+      }
+    }
+  }
+}
