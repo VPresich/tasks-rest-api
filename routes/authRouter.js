@@ -41,7 +41,7 @@ authRouter.patch(
   usersCtrls.updateAvatarCloudinary
 );
 
-authRouter.get('/avatars', authMiddleware, usersCtrls.getAvatarUrl);
+authRouter.get('/avatar', authMiddleware, usersCtrls.getAvatarUrl);
 
 authRouter.patch(
   '/themes',
