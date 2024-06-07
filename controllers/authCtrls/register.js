@@ -44,6 +44,7 @@ const register = ctrlWrapper(async (req, res, next) => {
       name: newUser.name,
       email: newUser.email,
       avatarURL: newUser.avatarURL,
+      theme: newUser.theme,
     },
   });
 });
