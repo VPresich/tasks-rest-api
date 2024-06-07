@@ -11,11 +11,9 @@ const updateBoard = ctrlWrapper(async (req, res, next) => {
       new: true,
     }
   );
-
   if (!updatedBoard) {
     throw HttpError(404);
   }
-
   res.status(200).json(updatedBoard);
 });
 

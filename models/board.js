@@ -12,6 +12,11 @@ const boardSchema = new mongoose.Schema(
       default: '',
     },
 
+    icon: {
+      type: String,
+      default: '',
+    },
+
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
