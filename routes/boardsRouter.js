@@ -31,4 +31,11 @@ boardsRouter.post(
 
 boardsRouter.patch('/:id', authMiddleware, checkBoard, boardsCtrl.updateBoard);
 
+boardsRouter.get(
+  '/:id/tasks',
+  authMiddleware,
+  checkBoard,
+  boardsCtrl.getAllTasksForBoard
+);
+
 export default boardsRouter;

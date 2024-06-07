@@ -5,6 +5,7 @@ import getAllBoards from './getAllBoards.js';
 import updateBoard from './updateBoard.js';
 import getAllColsForBoard from './getAllColsForBoard.js';
 import createColumnForBoard from './createColumnForBoard.js';
+import getAllTasksForBoard from './getAllTasksForBoard.js';
 
 export default {
   createBoard,
@@ -14,4 +15,5 @@ export default {
   updateBoard,
   getAllColsForBoard,
   createColumnForBoard,
+  getAllTasksForBoard,
 };
