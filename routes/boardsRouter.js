@@ -2,6 +2,10 @@ import express from 'express';
 import validateBody from '../helpers/validateBody.js';
 import boardsCtrl from '../controllers/boardsCtrls/index.js';
 import checkBoard from '../helpers/checkBoard.js';
+import {
+  boardSchemaCreate,
+  boardSchemaUpdate,
+} from '../schemas/boardSchema.js';
 
 import authMiddleware from '../helpers/authMiddleware.js';
 
@@ -25,11 +29,18 @@ boardsRouter.get(
 boardsRouter.post(
   '/:id/columns',
   authMiddleware,
+  validateBody(boardSchemaCreate),
   checkBoard,
   boardsCtrl.createColumnForBoard
 );
 
-boardsRouter.patch('/:id', authMiddleware, checkBoard, boardsCtrl.updateBoard);
+boardsRouter.patch(
+  '/:id',
+  authMiddleware,
+  checkBoard,
+  validateBody(boardSchemaUpdate),
+  boardsCtrl.updateBoard
+);
 
 boardsRouter.get(
   '/:id/tasks',
