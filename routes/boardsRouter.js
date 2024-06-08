@@ -45,6 +45,13 @@ boardsRouter.get(
   '/:id/tasks',
   authMiddleware,
   checkBoard,
+  boardsCtrl.getAllTasksForBoard
+);
+
+boardsRouter.get(
+  '/:id/columnsAndtasks',
+  authMiddleware,
+  checkBoard,
   boardsCtrl.getTasksColumnsForBoard
 );
 
