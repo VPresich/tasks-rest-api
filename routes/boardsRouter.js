@@ -29,7 +29,6 @@ boardsRouter.get(
 boardsRouter.post(
   '/:id/columns',
   authMiddleware,
-  validateBody(boardSchemaCreate),
   checkBoard,
   boardsCtrl.createColumnForBoard
 );
@@ -46,7 +45,7 @@ boardsRouter.get(
   '/:id/tasks',
   authMiddleware,
   checkBoard,
-  boardsCtrl.getAllTasksForBoard
+  boardsCtrl.getTasksColumnsForBoard
 );
 
 export default boardsRouter;

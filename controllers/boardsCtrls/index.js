@@ -6,6 +6,7 @@ import updateBoard from './updateBoard.js';
 import getAllColsForBoard from './getAllColsForBoard.js';
 import createColumnForBoard from './createColumnForBoard.js';
 import getAllTasksForBoard from './getAllTasksForBoard.js';
+import getTasksColumnsForBoard from './getTasksColumnsForBoard.js';
 
 export default {
   createBoard,
@@ -16,4 +17,5 @@ export default {
   getAllColsForBoard,
   createColumnForBoard,
   getAllTasksForBoard,
+  getTasksColumnsForBoard,
 };
