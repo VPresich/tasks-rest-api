@@ -27,6 +27,7 @@ export const updateData = ctrlWrapper(async (req, res, next) => {
   });
 
   res.status(200).json({
+    _id: updatedUser._id,
     name: updatedUser.name,
     email: updatedUser.email,
     theme: updatedUser.theme,
