@@ -31,6 +31,7 @@ export const updateData = ctrlWrapper(async (req, res, next) => {
     name: updatedUser.name,
     email: updatedUser.email,
     theme: updatedUser.theme,
+    avatarURL: updatedUser.avatarURL,
   });
 });
 
