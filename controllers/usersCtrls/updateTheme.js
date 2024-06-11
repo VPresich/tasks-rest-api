@@ -11,7 +11,7 @@ const updateTheme = ctrlWrapper(async (req, res) => {
   }
   user.theme = theme.toLowerCase();
   await user.save();
-  res.json({ user });
+  res.json({ theme: user.theme });
 });
 
 export default updateTheme;

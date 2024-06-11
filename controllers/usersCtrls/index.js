@@ -4,9 +4,10 @@ import getAvatar from './getAvatar.js';
 import getAvatarUrl from './getAvatarUrl.js';
 import updateAvatarGCS from './updateAvatarGCS.js';
 import updateAvatarCloudinary from './updateAvatarCloudinary.js';
-import updateProfile from './updateProfile.js';
+import updateProfile from './updateProfileAvatar.js';
 import updateTheme from './updateTheme.js';
 import getTheme from './getTheme.js';
+import updateData from './updateData.js';
 
 export default {
   getAvatar,
@@ -17,4 +18,5 @@ export default {
   updateProfile,
   updateTheme,
   getTheme,
+  updateData,
 };

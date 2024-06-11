@@ -30,8 +30,7 @@ authRouter.patch(
   '/',
   authMiddleware,
   validateBody(profileSchema),
-  upload.single('avatar'),
-  usersCtrls.updateProfile
+  usersCtrls.updateData
 );
 
 authRouter.patch(
