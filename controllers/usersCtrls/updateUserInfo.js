@@ -3,12 +3,11 @@ import User from '../../models/user.js';
 import HttpError from '../../helpers/HttpError.js';
 import ctrlWrapper from '../../helpers/ctrlWrapper.js';
 
-export const updateData = ctrlWrapper(async (req, res, next) => {
+export const updateUserInfo = ctrlWrapper(async (req, res, next) => {
   const { name, email, password, theme } = req.body;
   const { id } = req.user;
-
   const existingUser = await User.findOne({ email });
-  if (existingUser && existingUser._id !== id) {
+  if (existingUser && !existingUser._id.equals(id)) {
     throw HttpError(409, 'Email already in use');
   }
   let hashPassword = null;
@@ -35,4 +34,4 @@ export const updateData = ctrlWrapper(async (req, res, next) => {
   });
 });
 
-export default updateData;
+export default updateUserInfo;

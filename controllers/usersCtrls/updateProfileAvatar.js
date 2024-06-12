@@ -13,7 +13,7 @@ export const updateProfile = ctrlWrapper(async (req, res, next) => {
   const { path: tempUpload } = req.file;
 
   const existingUser = await User.findOne({ email });
-  if (existingUser && existingUser._id !== id) {
+  if (existingUser && !existingUser._id.equals(id)) {
     throw HttpError(409, 'Email already in use');
   }
 

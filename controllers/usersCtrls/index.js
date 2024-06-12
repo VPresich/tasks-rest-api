@@ -7,7 +7,7 @@ import updateAvatarCloudinary from './updateAvatarCloudinary.js';
 import updateProfile from './updateProfileAvatar.js';
 import updateTheme from './updateTheme.js';
 import getTheme from './getTheme.js';
-import updateData from './updateData.js';
+import updateUserInfo from './updateUserInfo.js';
 
 export default {
   getAvatar,
@@ -18,5 +18,5 @@ export default {
   updateProfile,
   updateTheme,
   getTheme,
-  updateData,
+  updateUserInfo,
 };

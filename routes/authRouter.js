@@ -30,7 +30,7 @@ authRouter.patch(
   '/',
   authMiddleware,
   validateBody(profileSchema),
-  usersCtrls.updateData
+  usersCtrls.updateUserInfo
 );
 
 authRouter.patch(
