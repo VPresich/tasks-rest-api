@@ -29,6 +29,7 @@ const authMiddleware = async (req, _, next) => {
         email: user.email,
         avatarURL: user.avatarURL,
         theme: user.theme,
+        password: user.password,
       };
       next();
     } catch (error) {
