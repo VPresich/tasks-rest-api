@@ -50,4 +50,12 @@ authRouter.patch(
 );
 authRouter.get('/themes', authMiddleware, usersCtrls.getTheme);
 
+authRouter.patch(
+  '/profile',
+  authMiddleware,
+  upload.single('avatar'),
+  validateBody(profileSchema),
+  usersCtrls.updateProfile
+);
+
 export default authRouter;
