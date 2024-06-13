@@ -505,7 +505,7 @@
         }
       },
 
-      "RegistrationResponse": {
+      "RegistrationResponce": {
         "type": "object",
         "properties": {
           "token": {
