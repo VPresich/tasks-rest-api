@@ -35,41 +35,66 @@
     }
   ],
   "paths": {
-    "/users/register": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "User registration",
-        "parameters": [],
-        "requestBody": {
-          "description": "Registration's object",
-          "required": true,
+    "post": {
+      "tags": ["Users"],
+      "summary": "User registration",
+      "parameters": [],
+      "requestBody": {
+        "description": "Registration's object",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "email", "password"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Successful registration",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
               }
             }
           }
         },
-        "responses": {
-          "201": {
-            "description": "Successful registration",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponce"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          },
-          "409": {
-            "description": "Email in use",
-            "content": {}
-          }
+        "400": {
+          "description": "Bad request (invalid request body)",
+          "content": {}
+        },
+        "409": {
+          "description": "Email in use",
+          "content": {}
         }
       }
     },
