@@ -142,13 +142,15 @@
       "post": {
         "tags": ["Users"],
         "summary": "User logout",
-
         "parameters": [
           {
             "in": "header",
             "name": "Authorization",
             "description": "Bearer token",
-            "required": true
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -156,11 +158,17 @@
           "required": true,
           "content": {
             "application/json": {
-              "email": {
-                "$ref": "#/components/schemas/UserRegistration/properties/email"
-              },
-              "password": {
-                "$ref": "#/components/schemas/UserRegistration/properties/password"
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "password"]
               }
             }
           }
