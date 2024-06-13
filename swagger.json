@@ -35,66 +35,68 @@
     }
   ],
   "paths": {
-    "post": {
-      "tags": ["Users"],
-      "summary": "User registration",
-      "parameters": [],
-      "requestBody": {
-        "description": "Registration's object",
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "password": {
-                  "type": "string"
-                }
-              },
-              "required": ["name", "email", "password"]
-            }
-          }
-        }
-      },
-      "responses": {
-        "201": {
-          "description": "Successful registration",
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "string"
-                  },
                   "name": {
                     "type": "string"
                   },
                   "email": {
                     "type": "string"
                   },
-                  "createdAt": {
-                    "type": "string",
-                    "format": "date-time"
+                  "password": {
+                    "type": "string"
                   }
-                }
+                },
+                "required": ["name", "email", "password"]
               }
             }
           }
         },
-        "400": {
-          "description": "Bad request (invalid request body)",
-          "content": {}
-        },
-        "409": {
-          "description": "Email in use",
-          "content": {}
+        "responses": {
+          "201": {
+            "description": "Successful registration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Email in use",
+            "content": {}
+          }
         }
       }
     },
@@ -850,27 +852,6 @@
 
   "components": {
     "schemas": {
-      "RegistrationRequest": {
-        "type": "object",
-        "required": ["name", "email", "password"],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "User's name"
-          },
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
-          }
-        }
-      },
-
       "LoginRequest": {
         "type": "object",
         "required": ["email", "password"],
