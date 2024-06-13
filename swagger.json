@@ -19,15 +19,15 @@
     },
     {
       "name": "Boards",
-      "description": "Create, delete, "
+      "description": "Create, delete, update"
     },
     {
       "name": "Columns",
-      "description": "Create, delete, "
+      "description": "Create, delete, update "
     },
     {
       "name": "Tasks",
-      "description": "Create, delete, "
+      "description": "Create, delete, update"
     },
     {
       "name": "Support",
@@ -695,6 +695,120 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": ["Boards"],
+        "summary": "Delete a board",
+        "description": "Deletes a board along with its columns and tasks if the user is authorized.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the board to delete",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "Bearer token for user authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful board deletion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Board"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body or parameters)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Invalid board ID"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invalid or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden (user not authorized to delete the board)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not authorized to remove this board"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found (board not found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Board not found"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/boards/{id}/columns": {
@@ -872,19 +986,6 @@
           "password": {
             "type": "string",
             "description": "User's password"
-          }
-        }
-      },
-
-      "RegistrationResponce": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "description": "Access token"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
           }
         }
       },
