@@ -898,6 +898,7 @@
         }
       }
     },
+
     "/boards/{id}/tasks": {
       "get": {
         "summary": "Get all tasks for a board",
@@ -963,6 +964,88 @@
                       "example": "Board not found"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/columns/{id}/tasks": {
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "Create a task for a column",
+        "description": "Creates a new task in the specified column.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the column to add the task to",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Task object that needs to be added to the column",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/Task"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request (invalid request body or parameters)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Invalid request body"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found (column not found)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Column not found"
                 }
               }
             }
@@ -1085,37 +1168,52 @@
       "Task": {
         "type": "object",
         "properties": {
-          "_id": {
+          "id": {
             "type": "string",
-            "example": "60d5ec49f68a4b8b8c1b5c8e"
+            "description": "The ID of the created task"
           },
           "title": {
             "type": "string",
-            "example": "Task 1"
+            "description": "The title of the task"
           },
           "description": {
             "type": "string",
-            "example": "Description for Task 1"
+            "description": "The description of the task"
           },
           "priority": {
             "type": "string",
-            "example": "in-progress"
+            "description": "The priority level of the task",
+            "enum": ["Low", "Medium", "High"]
           },
           "deadline": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-06-13T03:56:05.574Z"
+            "description": "The deadline for the task"
+          },
+          "column": {
+            "type": "string",
+            "description": "The ID of the column this task belongs to"
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-06-13T03:56:05.574Z"
+            "description": "Task creation timestamp"
           },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-06-13T03:56:05.574Z"
+            "description": "Task last update timestamp"
           }
+        },
+        "example": {
+          "id": "60d21b4667d0d8992e610c86",
+          "title": "New Task",
+          "description": "This is a new task",
+          "priority": "Low",
+          "deadline": "2024-06-14T12:00:00Z",
+          "column": "60d21b4667d0d8992e610c85",
+          "createdAt": "2024-06-13T12:00:00Z",
+          "updatedAt": "2024-06-13T12:00:00Z"
         }
       }
     }
