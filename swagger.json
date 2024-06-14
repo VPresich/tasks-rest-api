@@ -1382,7 +1382,7 @@
                   },
                   "priority": {
                     "type": "string",
-                    "enum": ["Low", "Medium", "High"],
+                    "enum": ["Low", "Medium", "High", "Without priority"],
                     "description": "The updated priority level of the task"
                   },
                   "deadline": {
@@ -1759,7 +1759,7 @@
           "priority": {
             "type": "string",
             "description": "The priority level of the task",
-            "enum": ["Low", "Medium", "High"]
+            "enum": ["Low", "Medium", "High", "Without priority"]
           },
           "deadline": {
             "type": "string",
