@@ -333,6 +333,12 @@
               "schema": {
                 "type": "object",
                 "$ref": "#/components/schemas/UpdateProfileRequest"
+              },
+              "example": {
+                "name": "string",
+                "email": "user@example.com",
+                "password": "user@example.com",
+                "theme": "light"
               }
             }
           }
@@ -397,6 +403,11 @@
             "required": true
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -405,7 +416,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Board"
+                    "$ref": "#/components/schemas/BoardResponse"
                   }
                 }
               }
@@ -428,27 +439,21 @@
         "summary": "Create a new board",
         "description": "Create a new board and assign the current user as the owner.",
         "tags": ["Boards"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "My New Board"
-                  },
-                  "background": {
-                    "type": "string",
-                    "example": "blue"
-                  },
-                  "icon": {
-                    "type": "string",
-                    "example": "star"
-                  }
-                },
-                "required": ["title"]
+                "$ref": "#/components/schemas/BoardRequest"
               }
             }
           }
@@ -460,38 +465,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "example": "60d5ec49f68a4b8b8c1b5c8e"
-                    },
-                    "title": {
-                      "type": "string",
-                      "example": "My New Board"
-                    },
-                    "background": {
-                      "type": "string",
-                      "example": "blue"
-                    },
-                    "icon": {
-                      "type": "string",
-                      "example": "star"
-                    },
-                    "owner": {
-                      "type": "string",
-                      "example": "60d5ec49f68a4b8b8c1b5c8e"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-06-13T03:56:05.574Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-06-13T03:56:05.574Z"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ShortBoardResponse"
                 }
               }
             }
@@ -518,19 +492,14 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        }
       }
     },
 
     "/boards/{id}": {
       "get": {
         "summary": "Get a board by its ID",
-        "description": "Retrieve detailed information about a specific board by its ID.",
+        "description": "Retrieve information about a specific board by its ID.",
         "tags": ["Boards"],
 
         "parameters": [
@@ -551,13 +520,18 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "Successfully retrieved board details",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Board"
+                  "$ref": "#/components/schemas/BoardResponse"
                 }
               }
             }
@@ -570,6 +544,25 @@
               "schema": {
                 "type": "object",
                 "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Forbidden ",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "Error message"
+                  }
+                }
+              },
+              "example": {
+                "message": "You are not authorized to get this board"
               }
             }
           }
@@ -618,20 +611,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "Updated Board Title"
-                  },
-                  "background": {
-                    "type": "string",
-                    "example": "green"
-                  },
-                  "icon": {
-                    "type": "string",
-                    "example": "new-icon"
-                  }
-                }
+                "$ref": "#/components/schemas/BoardRequest"
               }
             }
           }
@@ -643,38 +623,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "example": "60d5ec49f68a4b8b8c1b5c8e"
-                    },
-                    "title": {
-                      "type": "string",
-                      "example": "Updated Board Title"
-                    },
-                    "background": {
-                      "type": "string",
-                      "example": "green"
-                    },
-                    "icon": {
-                      "type": "string",
-                      "example": "new-icon"
-                    },
-                    "owner": {
-                      "type": "string",
-                      "example": "60d5ec49f68a4b8b8c1b5c8e"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-06-13T03:56:05.574Z"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2024-06-13T03:56:05.574Z"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ShortBoardResponse"
                 }
               }
             }
@@ -701,8 +650,27 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden (user not authorized to delete the board)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not authorized to edit this board"
+                }
+              }
+            }
+          },
           "404": {
-            "description": "Not Found",
+            "description": "Board not Found",
             "content": {
               "application/json": {
                 "schema": {
@@ -743,6 +711,11 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "Successful board deletion",
@@ -750,7 +723,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Board"
+                  "$ref": "#/components/schemas/ShortBoardResponse"
                 }
               }
             }
@@ -781,7 +754,7 @@
             }
           },
           "403": {
-            "description": "Forbidden (user not authorized to delete the board)",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -821,6 +794,7 @@
         }
       }
     },
+
     "/boards/{id}/columns": {
       "get": {
         "summary": "Get all columns for a board",
@@ -844,6 +818,11 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "Successfully retrieved columns for the board",
@@ -853,43 +832,7 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "example": "60d5ec49f68a4b8b8c1b5c8e"
-                      },
-                      "title": {
-                        "type": "string",
-                        "example": "Column Title"
-                      },
-                      "board": {
-                        "type": "object",
-                        "properties": {
-                          "_id": {
-                            "type": "string",
-                            "example": "666a6dd560dcc0c6c2d0f2f2"
-                          },
-                          "title": {
-                            "type": "string",
-                            "example": "Board Title"
-                          },
-                          "background": {
-                            "type": "string",
-                            "example": "111111"
-                          }
-                        }
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-06-13T03:56:05.574Z"
-                      },
-                      "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-06-13T03:56:05.574Z"
-                      }
-                    }
+                    "$ref": "#/components/schemas/ColumnResponse"
                   }
                 }
               }
@@ -906,8 +849,27 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not authorized to get this columns"
+                }
+              }
+            }
+          },
           "404": {
-            "description": "Board not found",
+            "description": "Column not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -924,11 +886,18 @@
           }
         }
       },
+
       "post": {
         "tags": ["Columns"],
         "summary": "Create a column for a board",
         "description": "Creates a new column for a specific board.",
         "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          },
           {
             "name": "id",
             "in": "path",
@@ -946,13 +915,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "The title of the new column"
-                  }
-                },
-                "required": ["title"]
+                "$ref": "#/components/schemas/ColumnRequest"
               }
             }
           }
@@ -964,7 +927,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Column"
+                  "$ref": "#/components/schemas/ShortColumnResponse"
                 }
               }
             }
@@ -976,6 +939,25 @@
                 "schema": {
                   "type": "object",
                   "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not authorized to create columns"
                 }
               }
             }
@@ -999,6 +981,7 @@
         }
       }
     },
+
     "/columns/{id}": {
       "patch": {
         "summary": "Update a column by ID",
@@ -1026,12 +1009,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "New title of the column"
-                  }
-                }
+                "$ref": "#/components/schemas/ColumnRequest"
               }
             }
           }
@@ -1043,16 +1021,60 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Column"
+                  "$ref": "#/components/schemas/ShortColumnResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not authorized to get this columns"
                 }
               }
             }
           },
           "404": {
-            "description": "Column not found"
+            "description": "Column not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Board or column not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
+
       "delete": {
         "summary": "Delete a column by ID",
         "tags": ["Columns"],
@@ -1067,6 +1089,11 @@
             "description": "ID of the column to delete"
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "Column deleted successfully",
@@ -1074,17 +1101,61 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Column"
+                  "$ref": "#/components/schemas/ShortColumnResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not authorized to get this columns"
                 }
               }
             }
           },
           "404": {
-            "description": "Column not found"
+            "description": "Column not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Board not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
+
     "/boards/{id}/tasks": {
       "get": {
         "summary": "Get all tasks for a board",
@@ -1108,6 +1179,11 @@
             "description": "The ID of the board to retrieve tasks from"
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "List of all tasks for the specified board",
@@ -1116,24 +1192,38 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Task"
+                    "$ref": "#/components/schemas/TaskResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
                   }
                 },
-                "examples": {
-                  "example-1": {
-                    "summary": "A task",
-                    "value": [
-                      {
-                        "_id": "60d5ec49f68a4b8b8c1b5c8e",
-                        "title": "Task 1",
-                        "description": "Description for Task 1",
-                        "status": "in-progress",
-                        "column": "60d5ec49f68a4b8b8c1b5c8f",
-                        "createdAt": "2024-06-13T03:56:05.574Z",
-                        "updatedAt": "2024-06-13T03:56:05.574Z"
-                      }
-                    ]
-                  }
+                "example": {
+                  "message": "You are not authorized to get this columns"
                 }
               }
             }
@@ -1164,6 +1254,12 @@
         "description": "Creates a new task in the specified column.",
         "parameters": [
           {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -1180,7 +1276,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/Task"
+                "$ref": "#/components/schemas/TaskRequest"
               }
             }
           }
@@ -1192,7 +1288,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Task"
+                  "$ref": "#/components/schemas/ShortTaskResponse"
                 }
               }
             }
@@ -1212,8 +1308,20 @@
               }
             }
           },
-          "404": {
-            "description": "Not found (column not found)",
+
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1226,7 +1334,23 @@
                   }
                 },
                 "example": {
-                  "message": "Column not found"
+                  "message": "You are not authorized to added tasks to this column"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Column not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Board not found"
+                    }
+                  }
                 }
               }
             }
@@ -1234,6 +1358,7 @@
         }
       }
     },
+
     "/tasks/{id}": {
       "patch": {
         "tags": ["Tasks"],
@@ -1263,26 +1388,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "The updated title of the task"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "The updated description of the task"
-                  },
-                  "priority": {
-                    "type": "string",
-                    "enum": ["Low", "Medium", "High", "Without priority"],
-                    "description": "The updated priority level of the task"
-                  },
-                  "deadline": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The updated deadline for the task"
-                  }
-                }
+                "$ref": "#/components/schemas/TaskRequest"
               }
             }
           }
@@ -1294,7 +1400,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Task"
+                  "$ref": "#/components/schemas/ShortTaskResponse"
                 }
               }
             }
@@ -1310,8 +1416,20 @@
               }
             }
           },
-          "404": {
-            "description": "Not found (task not found)",
+
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1322,12 +1440,32 @@
                       "description": "Error message"
                     }
                   }
+                },
+                "example": {
+                  "message": "You are not authorized to edit tasks to this column"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": " The task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Board or column or task not found"
+                    }
+                  }
                 }
               }
             }
           }
         }
       },
+
       "delete": {
         "tags": ["Tasks"],
         "summary": "Delete a task",
@@ -1349,6 +1487,11 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "Task deleted successfully",
@@ -1356,13 +1499,24 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/Task"
+                  "$ref": "#/components/schemas/ShortTaskResponse"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not found (task not found)",
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1371,6 +1525,25 @@
                     "message": {
                       "type": "string",
                       "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not authorized to delete tasks to this column"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The task not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Board or column or task not found"
                     }
                   }
                 }
@@ -1385,24 +1558,21 @@
       "post": {
         "summary": "Create a new help request",
         "tags": ["Help"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Email of the requester"
-                  },
-                  "text": {
-                    "type": "string",
-                    "description": "Text of the help request"
-                  }
-                },
-                "required": ["email", "text"]
+                "$ref": "#/components/schemas/HelpRequest"
               }
             }
           }
@@ -1431,6 +1601,17 @@
                 "schema": {
                   "type": "object",
                   "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
                 }
               }
             }
@@ -1506,12 +1687,6 @@
             "type": "string",
             "description": "User's theme",
             "enum": ["light", "dark", "violet"]
-          },
-          "example": {
-            "name": "string",
-            "email": "user@example.com",
-            "password": "user@example.com",
-            "theme": "light"
           }
         }
       },
@@ -1526,6 +1701,140 @@
           }
         },
         "required": ["avatar"]
+      },
+
+      "BoardRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the board"
+          },
+          "background": {
+            "type": "string",
+            "description": "Backgound id from existing backgrounds, by default: no image",
+            "default": ""
+          },
+          "icon": {
+            "type": "string",
+            "description": "icon id from existing in sprite",
+            "default": "icon-circles",
+            "enum": [
+              "icon-circles",
+              "icon-star",
+              "icon-loading",
+              "icon-puzzle-piece",
+              "icon-container",
+              "icon-lightning",
+              "icon-colors",
+              "icon-hexagon"
+            ]
+          }
+        }
+      },
+
+      "ColumnRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the column",
+            "example": "To Do"
+          }
+        }
+      },
+
+      "TaskRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the task"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the task",
+            "default": ""
+          },
+          "priority": {
+            "type": "string",
+            "description": "The priority level of the task",
+            "enum": ["Low", "Medium", "High", "Without priority"],
+            "default": "Without priority"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The deadline for the task",
+            "default": null
+          },
+
+          "example": {
+            "title": "New Task",
+            "description": "This is a new task",
+            "priority": "Low",
+            "deadline": "2024-06-14T12:00:00Z"
+          }
+        }
+      },
+
+      "TaskRequesForUpdate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the task"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the task",
+            "default": ""
+          },
+          "priority": {
+            "type": "string",
+            "description": "The priority level of the task",
+            "enum": ["Low", "Medium", "High", "Without priority"],
+            "default": "Without priority"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The deadline for the task",
+            "default": null
+          },
+          "column": {
+            "type": "string",
+            "description": "Column ID into which the card is moved ",
+            "default": null
+          },
+
+          "example": {
+            "title": "New Task",
+            "description": "This is a new task",
+            "priority": "Low",
+            "deadline": "2024-06-14T12:00:00Z",
+            "column": "666f0b6daafdd8ba3eb49ea7"
+          }
+        }
+      },
+
+      "HelpRequest": {
+        "type": "object",
+        "required": ["email", "text"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email"
+          },
+          "text": {
+            "type": "string",
+            "description": "User's message"
+          }
+        }
       },
 
       "RegistrationResponse": {
@@ -1595,10 +1904,10 @@
         }
       },
 
-      "Board": {
+      "BoardResponse": {
         "type": "object",
         "properties": {
-          "id": {
+          "_id": {
             "type": "string",
             "description": "Unique identifier of the board"
           },
@@ -1618,7 +1927,7 @@
           "owner": {
             "type": "object",
             "properties": {
-              "id": {
+              "_id": {
                 "type": "string",
                 "description": "Unique identifier of the owner"
               },
@@ -1641,11 +1950,59 @@
               }
             },
             "description": "Information about the owner of the board"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Task creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Task last update timestamp"
           }
         }
       },
 
-      "Column": {
+      "ShortBoardResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique identifier of the board"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the board"
+          },
+          "background": {
+            "type": "string",
+            "description": "Url of background image"
+          },
+          "icon": {
+            "type": "string",
+            "description": "icon id in the spright"
+          },
+
+          "owner": {
+            "type": "string",
+            "example": "owner id",
+            "description": "owner id"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Task creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Task last update timestamp"
+          }
+        }
+      },
+
+      "ColumnResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -1658,10 +2015,28 @@
             "description": "The title of the column",
             "example": "To Do"
           },
+
           "board": {
-            "type": "string",
-            "description": "The ID of the board that the column belongs to",
-            "example": "60c9b01baf054e001f91f2a9"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Unique identifier of thr board"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title of the boars"
+              },
+              "background": {
+                "type": "string",
+                "description": "Background (image id)"
+              },
+              "icon": {
+                "type": "string",
+                "description": "Icon id in sprite"
+              }
+            },
+            "description": "Information about the owner of the board"
           },
           "createdAt": {
             "type": "string",
@@ -1675,14 +2050,49 @@
             "description": "Timestamp when the column was last updated",
             "example": "2024-06-13T12:30:00Z"
           }
-        },
-        "required": ["id", "title", "board", "createdAt", "updatedAt"]
+        }
       },
 
-      "Task": {
+      "ShortColumnResponse": {
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
+            "description": "The unique identifier of the column",
+            "example": "60c9b01baf054e001f91f2b1"
+          },
+
+          "title": {
+            "type": "string",
+            "description": "The title of the column",
+            "example": "To Do"
+          },
+
+          "board": {
+            "type": "string",
+            "description": "The ID of the board that the column belongs to",
+            "example": "60c9b01baf054e001f91f2a9"
+          },
+
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the column was created",
+            "example": "2024-06-13T12:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the column was last updated",
+            "example": "2024-06-13T12:30:00Z"
+          }
+        }
+      },
+
+      "TaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
             "type": "string",
             "description": "The ID of the created task"
           },
@@ -1690,29 +2100,44 @@
             "type": "string",
             "description": "The title of the task"
           },
+
           "description": {
             "type": "string",
             "description": "The description of the task"
           },
+
           "priority": {
             "type": "string",
             "description": "The priority level of the task",
-            "enum": ["Low", "Medium", "High", "Without priority"]
+            "enum": ["Low", "Medium", "High", "Without priority"],
+            "default": "Without priority"
           },
+
           "deadline": {
             "type": "string",
             "format": "date-time",
             "description": "The deadline for the task"
           },
           "column": {
-            "type": "string",
-            "description": "The ID of the column this task belongs to"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "The ID of the column"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the column"
+              }
+            }
           },
+
           "createdAt": {
             "type": "string",
             "format": "date-time",
             "description": "Task creation timestamp"
           },
+
           "updatedAt": {
             "type": "string",
             "format": "date-time",
@@ -1720,7 +2145,69 @@
           }
         },
         "example": {
-          "id": "60d21b4667d0d8992e610c86",
+          "_id": "60d21b4667d0d8992e610c86",
+          "title": "New Task",
+          "description": "This is a new task",
+          "priority": "Low",
+          "deadline": "2024-06-14T12:00:00Z",
+          "column": {
+            "_id": "60d21b4667d0d8992e610c85",
+            "title": "Column title"
+          },
+          "createdAt": "2024-06-13T12:00:00Z",
+          "updatedAt": "2024-06-13T12:00:00Z"
+        }
+      },
+
+      "ShortTaskResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The ID of the created task"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the task"
+          },
+
+          "description": {
+            "type": "string",
+            "description": "The description of the task"
+          },
+
+          "priority": {
+            "type": "string",
+            "description": "The priority level of the task",
+            "enum": ["Low", "Medium", "High", "Without priority"],
+            "default": "Without priority"
+          },
+
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The deadline for the task"
+          },
+
+          "column": {
+            "type": "string",
+            "description": "The ID of the column"
+          },
+
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Task creation timestamp"
+          },
+
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Task last update timestamp"
+          }
+        },
+        "example": {
+          "_id": "60d21b4667d0d8992e610c86",
           "title": "New Task",
           "description": "This is a new task",
           "priority": "Low",
