@@ -47,18 +47,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": ["name", "email", "password"]
+                "$ref": "#/components/schemas/RegistrationRequest"
               }
             }
           }
@@ -70,32 +59,32 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    }
-                  }
+                  "$ref": "#/components/schemas/RegistrationResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
           },
           "409": {
             "description": "Email in use",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/EmailInUse"
+                }
+              }
+            }
           }
         }
       }
@@ -123,45 +112,32 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string",
-                      "description": "JWT token for authentication"
-                    },
-                    "user": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "User's name"
-                        },
-                        "email": {
-                          "type": "string",
-                          "format": "email",
-                          "description": "User's email address"
-                        },
-                        "avatarURL": {
-                          "type": "string",
-                          "description": "URL of user's avatar"
-                        },
-                        "theme": {
-                          "type": "string",
-                          "description": "User's preferred theme"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/RegistrationResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
           },
           "401": {
-            "description": "'Email or password is wrong'",
-            "content": {}
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/BadLoginResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -182,33 +158,25 @@
           }
         ],
         "requestBody": {
-          "description": "Update information",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": ["email", "password"]
-              }
-            }
-          }
+          "description": "Empty request body",
+          "content": {},
+          "required": false
         },
         "responses": {
-          "200": {
-            "description": "Successful logout",
-            "content": {}
+          "204": {
+            "description": "No content",
+            "content": [{}]
           },
           "401": {
-            "description": "Unauthorized",
-            "content": {}
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -217,7 +185,7 @@
     "/users/current": {
       "get": {
         "tags": ["Users"],
-        "summary": "Refresh user by tocken",
+        "summary": "Refresh user information",
         "parameters": [
           {
             "in": "header",
@@ -226,10 +194,34 @@
             "required": true
           }
         ],
+
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
+
         "responses": {
           "200": {
-            "description": "Successful refresh",
-            "content": {}
+            "description": "User refresh successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -247,25 +239,33 @@
             "required": true
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
-          "201": {
-            "description": "Successful registration",
+          "200": {
+            "description": "Ok",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "avatarUrl": "User's avatar"
+                  "type": "object",
+                  "$ref": "#/components/schemas/AvatarResponse"
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized",
-            "content": {}
-          },
-          "404": {
-            "description": "Not found",
-            "content": {}
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -299,15 +299,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "avatarUrl": "User's avatar"
+                  "$ref": "#/components/schemas/AvatarResponse"
                 }
               }
             }
           },
           "401": {
             "description": "Unauthorized",
-            "content": {}
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -323,30 +328,11 @@
         ],
         "requestBody": {
           "description": "Updated user information",
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "User's name"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "User's email address"
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "User's new password"
-                  },
-                  "theme": {
-                    "type": "string",
-                    "description": "User's preferred theme"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdateProfileRequest"
               }
             }
           }
@@ -358,138 +344,42 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "description": "User ID"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "User's name"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "description": "User's email address"
-                    },
-                    "theme": {
-                      "type": "string",
-                      "description": "User's preferred theme"
-                    },
-                    "avatarURL": {
-                      "type": "string",
-                      "description": "URL of user's avatar"
-                    }
-                  }
+                  "$ref": "#/components/schemas/CurrentUserResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
           },
           "409": {
-            "description": "Email already in use"
-          }
-        }
-      }
-    },
-    "/users/profile": {
-      "patch": {
-        "tags": ["Users"],
-        "summary": "Update user information (with avatar)",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "description": "Bearer token",
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "description": "Update information",
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAvatarRequest"
-              },
-              "name": {
-                "type": "string",
-                "description": "User's name"
-              },
-              "email": {
-                "type": "string",
-                "description": "User's email address"
-              },
-              "password": {
-                "type": "string",
-                "description": "User's password"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Success",
+            "description": "Email in use",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfileResponse"
+                  "type": "object",
+                  "$ref": "#/components/schemas/EmailInUse"
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/users/themes": {
-      "patch": {
-        "tags": ["Users"],
-        "summary": "Update user theme",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "description": "Bearer token",
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "description": "Update theme",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string",
-                "theme": "User's theme"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "avatarUrl": "User's avatar"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {}
           }
         }
       }
@@ -522,8 +412,15 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
-            "content": {}
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
           }
         }
       },
@@ -600,33 +497,23 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad request",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Invalid input data"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorInRequest"
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized (invaild or missing token)",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Unauthorized"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
                 }
               }
             }
@@ -672,6 +559,17 @@
                 "schema": {
                   "$ref": "#/components/schemas/Board"
                 }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized (invaild or missing token)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
               }
             }
           }
@@ -782,17 +680,23 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad request",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Invalid input data"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
                 }
               }
             }
@@ -857,12 +761,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Error message"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorInRequest"
                 },
                 "example": {
                   "message": "Invalid board ID"
@@ -871,20 +770,12 @@
             }
           },
           "401": {
-            "description": "Unauthorized (invalid or missing token)",
+            "description": "Unauthorized (invaild or missing token)",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Error message"
-                    }
-                  }
-                },
-                "example": {
-                  "message": "Unauthorized"
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
                 }
               }
             }
@@ -1004,6 +895,17 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Board not found",
             "content": {
@@ -1073,12 +975,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Error message"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorInRequest"
                 }
               }
             }
@@ -1307,12 +1204,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Error message"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorInRequest"
                 },
                 "example": {
                   "message": "Invalid request body"
@@ -1413,12 +1305,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "description": "Error message"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ErrorInRequest"
                 }
               }
             }
@@ -1538,7 +1425,15 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)"
+            "description": "Bad request (invalid request body or parameters)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
           }
         }
       }
@@ -1547,6 +1442,25 @@
 
   "components": {
     "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password"
+          }
+        }
+      },
+
       "LoginRequest": {
         "type": "object",
         "required": ["email", "password"],
@@ -1563,7 +1477,91 @@
         }
       },
 
-      "User": {
+      "securitySchemes": {
+        "Bearer": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email"
+          },
+          "password": {
+            "type": "string",
+            "format": "email",
+            "description": "User's password"
+          },
+          "theme": {
+            "type": "string",
+            "description": "User's theme",
+            "enum": ["light", "dark", "violet"]
+          },
+          "example": {
+            "name": "string",
+            "email": "user@example.com",
+            "password": "user@example.com",
+            "theme": "light"
+          }
+        }
+      },
+
+      "UpdateAvatarRequest": {
+        "type": "object",
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "format": "binary",
+            "description": "User's avatar file"
+          }
+        },
+        "required": ["avatar"]
+      },
+
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "description": "JWT token for authentication",
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "test1970"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "test1970@test1970.com"
+              },
+              "avatarURL": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1717687717/def-avatar-light_1x_fkwy6u.jpg"
+              },
+              "theme": {
+                "type": "string",
+                "example": "light"
+              }
+            }
+          }
+        }
+      },
+
+      "CurrentUserResponse": {
         "type": "object",
         "properties": {
           "name": {
@@ -1581,80 +1579,20 @@
           },
           "theme": {
             "type": "string",
-            "description": "User's theme"
+            "description": "User's theme",
+            "enum": ["light", "dark", "violet"]
           }
         }
       },
 
-      "UserProfile": {
+      "AvatarResponse": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "User's name"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "User's email"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password"
-          },
-          "theme": {
-            "type": "string",
-            "description": "User's theme"
-          },
-          "avatar": {
-            "type": "string",
-            "format": "binary",
-            "description": "User's avatar image"
-          }
-        }
-      },
-
-      "UserProfileResponse": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Updated user's name"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "Updated user's email"
-          },
           "avatarURL": {
             "type": "string",
-            "description": "URL of the user's avatar"
-          },
-          "theme": {
-            "type": "string",
-            "description": "User's theme"
+            "description": "User's avatar URL"
           }
         }
-      },
-
-      "securitySchemes": {
-        "Bearer": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        }
-      },
-
-      "UpdateAvatarRequest": {
-        "type": "object",
-        "properties": {
-          "avatar": {
-            "type": "string",
-            "format": "binary",
-            "description": "User's avatar file"
-          }
-        },
-        "required": ["avatar"]
       },
 
       "Board": {
@@ -1790,6 +1728,54 @@
           "column": "60d21b4667d0d8992e610c85",
           "createdAt": "2024-06-13T12:00:00Z",
           "updatedAt": "2024-06-13T12:00:00Z"
+        }
+      },
+
+      "ErrorUnauthorizedResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Not authorized"
+        }
+      },
+
+      "ErrorInRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Error message"
+        }
+      },
+
+      "EmailInUse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Email in use"
+        }
+      },
+
+      "BadLoginResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Email or password is wrong"
         }
       }
     }
