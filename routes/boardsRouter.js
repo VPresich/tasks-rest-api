@@ -2,6 +2,8 @@ import express from 'express';
 import validateBody from '../helpers/validateBody.js';
 import boardsCtrl from '../controllers/boardsCtrls/index.js';
 import checkBoard from '../helpers/checkBoard.js';
+import checkBackground from '../helpers/checkBackground.js';
+
 import {
   boardSchemaCreate,
   boardSchemaUpdate,
@@ -17,7 +19,7 @@ boardsRouter.get('/:id', authMiddleware, checkBoard, boardsCtrl.getOneBoard);
 
 boardsRouter.delete('/:id', authMiddleware, checkBoard, boardsCtrl.deleteBoard);
 
-boardsRouter.post('/', authMiddleware, boardsCtrl.createBoard);
+boardsRouter.post('/', authMiddleware, checkBackground, boardsCtrl.createBoard);
 
 boardsRouter.get(
   '/:id/columns',
@@ -38,6 +40,7 @@ boardsRouter.patch(
   authMiddleware,
   checkBoard,
   validateBody(boardSchemaUpdate),
+  checkBackground,
   boardsCtrl.updateBoard
 );
 

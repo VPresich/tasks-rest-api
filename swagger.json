@@ -32,6 +32,10 @@
     {
       "name": "Help",
       "description": "Send email"
+    },
+    {
+      "name": "Backgrounds",
+      "description": "Send email"
     }
   ],
   "paths": {
@@ -1263,7 +1267,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "The ID of the column to add the task to",
+            "description": "The Id of the column the task add to",
             "schema": {
               "type": "string"
             }
@@ -1276,7 +1280,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/TaskRequest"
+                "$ref": "#/components/schemas/TaskRequesForUpdate"
               }
             }
           }
@@ -1554,6 +1558,52 @@
       }
     },
 
+    "/backgrounds": {
+      "get": {
+        "tags": ["Backgrounds"],
+        "summary": "Get all backgrounds",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Bearer token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "A list of all backgrounds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BackgroundResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     "/helps": {
       "post": {
         "summary": "Create a new help request",
@@ -1713,7 +1763,8 @@
           },
           "background": {
             "type": "string",
-            "description": "Backgound id from existing backgrounds, by default: no image",
+            "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
+            "enum": ["", "665dab40d37019ad00137c09", "theme00"],
             "default": ""
           },
           "icon": {
@@ -1812,8 +1863,8 @@
           },
 
           "example": {
-            "title": "New Task",
-            "description": "This is a new task",
+            "title": "Updated Task",
+            "description": "This is an updated task",
             "priority": "Low",
             "deadline": "2024-06-14T12:00:00Z",
             "column": "666f0b6daafdd8ba3eb49ea7"
@@ -1917,7 +1968,9 @@
           },
           "background": {
             "type": "string",
-            "description": "Url of background image"
+            "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
+            "enum": ["", "665dab40d37019ad00137c09", "theme00"],
+            "default": ""
           },
           "icon": {
             "type": "string",
@@ -1977,7 +2030,9 @@
           },
           "background": {
             "type": "string",
-            "description": "Url of background image"
+            "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
+            "enum": ["", "665dab40d37019ad00137c09", "theme00"],
+            "default": ""
           },
           "icon": {
             "type": "string",
@@ -2215,6 +2270,54 @@
           "column": "60d21b4667d0d8992e610c85",
           "createdAt": "2024-06-13T12:00:00Z",
           "updatedAt": "2024-06-13T12:00:00Z"
+        }
+      },
+
+      "BackgroundResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The background ID"
+          },
+          "imgUrl_desktop_2x": {
+            "type": "string",
+            "description": "URL for desktop image 2x"
+          },
+          "imgUrl_desktop_1x": {
+            "type": "string",
+            "description": "URL for desktop image 1x"
+          },
+          "imgUrl_mobile_1x": {
+            "type": "string",
+            "description": "URL for mobile image 1x"
+          },
+          "imgUrl_mobile_2x": {
+            "type": "string",
+            "description": "URL for mobile image 2x"
+          },
+          "imgUrl_tablet_1x": {
+            "type": "string",
+            "description": "URL for tablet image 1x"
+          },
+          "imgUrl_tablet_2x": {
+            "type": "string",
+            "description": "URL for tablet image 2x"
+          },
+          "label": {
+            "type": "string",
+            "description": "Label image URL"
+          }
+        },
+        "example": {
+          "_id": "665dab40d37019ad00137c09",
+          "imgUrl_desktop_2x": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1718033987/theme01_desktop_2x_vpsnlj.jpg",
+          "imgUrl_desktop_1x": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1718033986/theme01_desktop_1x_brzmfg.jpg",
+          "imgUrl_mobile_1x": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1718040177/theme01_mobile_1x_xqz8kb.jpg",
+          "imgUrl_mobile_2x": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1718040182/theme01_mobile_2x_eah6jm.jpg",
+          "imgUrl_tablet_1x": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1718038720/theme01_tablet_1x_yin395.jpg",
+          "imgUrl_tablet_2x": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1718038720/theme01_tablet_2x_s1glrh.jpg",
+          "label": "https://res.cloudinary.com/dirtbd4yk/image/upload/v1718041846/vector-01_wvpiqx.jpg"
         }
       },
 
