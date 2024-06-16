@@ -7,7 +7,7 @@ const getOneBoard = ctrlWrapper(async (req, res, next) => {
 
   const board = await Board.findById(id).populate(
     'owner',
-    '_id name email avatarUrl'
+    '_id name email avatarURL theme'
   );
 
   if (!board) {

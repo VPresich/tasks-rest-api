@@ -14,7 +14,7 @@ const boardSchema = new mongoose.Schema(
 
     icon: {
       type: String,
-      default: '',
+      default: 'icon-circles',
     },
 
     owner: {

@@ -6,8 +6,15 @@ const checkBoard = ctrlWrapper(async (req, res, next) => {
   const { id: boardId } = req.params;
   const { id: userId } = req.user;
 
-   const board = await Board.findById(boardId);
-  if (!board) {
+  let board = null;
+
+  try {
+    board = await Board.findById(boardId);
+
+    if (!board) {
+      throw HttpError(404, 'Board not found');
+    }
+  } catch {
     throw HttpError(404, 'Board not found');
   }
 
