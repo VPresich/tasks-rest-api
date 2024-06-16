@@ -5,7 +5,8 @@ import ctrlWrapper from './ctrlWrapper.js';
 const checkBackground = ctrlWrapper(async (req, res, next) => {
   const { background } = req.body;
 
-  if (!background || background === '' || background === 'theme00') next(); //without background
+  if (!background) return next();
+  if (background === '' || background === 'theme00') return next();
 
   let id = null;
   try {
