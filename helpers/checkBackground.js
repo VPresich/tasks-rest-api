@@ -6,7 +6,8 @@ const checkBackground = ctrlWrapper(async (req, res, next) => {
   const { background } = req.body;
 
   if (!background) return next();
-  if (background === '' || background === 'theme00') return next();
+  if (background === '' || background === 'theme00' || background === 'no-img')
+    return next();
 
   let id = null;
   try {

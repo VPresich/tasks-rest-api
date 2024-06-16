@@ -1764,7 +1764,7 @@
           "background": {
             "type": "string",
             "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
-            "enum": ["", "665dab40d37019ad00137c09", "theme00"],
+            "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"],
             "default": ""
           },
           "icon": {
@@ -1969,7 +1969,7 @@
           "background": {
             "type": "string",
             "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
-            "enum": ["", "665dab40d37019ad00137c09", "theme00"],
+            "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"],
             "default": ""
           },
           "icon": {
@@ -2031,7 +2031,7 @@
           "background": {
             "type": "string",
             "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
-            "enum": ["", "665dab40d37019ad00137c09", "theme00"],
+            "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"],
             "default": ""
           },
           "icon": {
@@ -2084,7 +2084,8 @@
               },
               "background": {
                 "type": "string",
-                "description": "Background (image id)"
+                "description": "Background (image id)",
+                "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"]
               },
               "icon": {
                 "type": "string",
