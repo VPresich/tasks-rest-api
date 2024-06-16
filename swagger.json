@@ -1173,6 +1173,11 @@
             "description": "The ID of the board to retrieve tasks from"
           }
         ],
+        "requestBody": {
+          "description": "Empty request body",
+          "content": {},
+          "required": false
+        },
         "responses": {
           "200": {
             "description": "List of all tasks for the specified board",
@@ -1181,24 +1186,38 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Task"
+                    "$ref": "#/components/schemas/TaskResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
                   }
                 },
-                "examples": {
-                  "example-1": {
-                    "summary": "A task",
-                    "value": [
-                      {
-                        "_id": "60d5ec49f68a4b8b8c1b5c8e",
-                        "title": "Task 1",
-                        "description": "Description for Task 1",
-                        "status": "in-progress",
-                        "column": "60d5ec49f68a4b8b8c1b5c8f",
-                        "createdAt": "2024-06-13T03:56:05.574Z",
-                        "updatedAt": "2024-06-13T03:56:05.574Z"
-                      }
-                    ]
-                  }
+                "example": {
+                  "message": "You are not authorized to get this columns"
                 }
               }
             }
@@ -1593,6 +1612,84 @@
         "required": ["avatar"]
       },
 
+      "BoardRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the board"
+          },
+          "background": {
+            "type": "string",
+            "description": "Backgound id from existing backgrounds, by default: no image",
+            "default": ""
+          },
+          "icon": {
+            "type": "string",
+            "description": "icon id from existing in sprite",
+            "default": "icon-circles",
+            "enum": [
+              "icon-circles",
+              "icon-star",
+              "icon-loading",
+              "icon-puzzle-piece",
+              "icon-container",
+              "icon-lightning",
+              "icon-colors",
+              "icon-hexagon"
+            ]
+          }
+        }
+      },
+
+      "ColumnRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the column",
+            "example": "To Do"
+          }
+        }
+      },
+
+      "TaskRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the task"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the task",
+            "default": ""
+          },
+          "priority": {
+            "type": "string",
+            "description": "The priority level of the task",
+            "enum": ["Low", "Medium", "High", "Without priority"],
+            "default": "Without priority"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The deadline for the task",
+            "default": null
+          },
+
+          "example": {
+            "title": "New Task",
+            "description": "This is a new task",
+            "priority": "Low",
+            "deadline": "2024-06-14T12:00:00Z"
+          }
+        }
+      },
+
       "RegistrationResponse": {
         "type": "object",
         "properties": {
@@ -1656,49 +1753,6 @@
           "avatarURL": {
             "type": "string",
             "description": "User's avatar URL"
-          }
-        }
-      },
-
-      "BoardRequest": {
-        "type": "object",
-        "required": ["title"],
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "Title of the board"
-          },
-          "background": {
-            "type": "string",
-            "description": "Backgound id from existing backgrounds, by default: no image",
-            "default": ""
-          },
-          "icon": {
-            "type": "string",
-            "description": "icon id from existing in sprite",
-            "default": "icon-circles",
-            "enum": [
-              "icon-circles",
-              "icon-star",
-              "icon-loading",
-              "icon-puzzle-piece",
-              "icon-container",
-              "icon-lightning",
-              "icon-colors",
-              "icon-hexagon"
-            ]
-          }
-        }
-      },
-
-      "ColumnRequest": {
-        "type": "object",
-        "required": ["title"],
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "The title of the column",
-            "example": "To Do"
           }
         }
       },
@@ -1885,14 +1939,13 @@
             "description": "Timestamp when the column was last updated",
             "example": "2024-06-13T12:30:00Z"
           }
-        },
-        "required": ["id", "title", "board", "createdAt", "updatedAt"]
+        }
       },
 
-      "Task": {
+      "TaskResponse": {
         "type": "object",
         "properties": {
-          "id": {
+          "_id": {
             "type": "string",
             "description": "The ID of the created task"
           },
@@ -1900,29 +1953,44 @@
             "type": "string",
             "description": "The title of the task"
           },
+
           "description": {
             "type": "string",
             "description": "The description of the task"
           },
+
           "priority": {
             "type": "string",
             "description": "The priority level of the task",
-            "enum": ["Low", "Medium", "High", "Without priority"]
+            "enum": ["Low", "Medium", "High", "Without priority"],
+            "default": "Without priority"
           },
+
           "deadline": {
             "type": "string",
             "format": "date-time",
             "description": "The deadline for the task"
           },
           "column": {
-            "type": "string",
-            "description": "The ID of the column this task belongs to"
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "The ID of the column"
+              },
+              "title": {
+                "type": "string",
+                "description": "The title of the column"
+              }
+            }
           },
+
           "createdAt": {
             "type": "string",
             "format": "date-time",
             "description": "Task creation timestamp"
           },
+
           "updatedAt": {
             "type": "string",
             "format": "date-time",
@@ -1930,12 +1998,15 @@
           }
         },
         "example": {
-          "id": "60d21b4667d0d8992e610c86",
+          "_id": "60d21b4667d0d8992e610c86",
           "title": "New Task",
           "description": "This is a new task",
           "priority": "Low",
           "deadline": "2024-06-14T12:00:00Z",
-          "column": "60d21b4667d0d8992e610c85",
+          "column": {
+            "_id": "60d21b4667d0d8992e610c85",
+            "title": "Column title"
+          },
           "createdAt": "2024-06-13T12:00:00Z",
           "updatedAt": "2024-06-13T12:00:00Z"
         }
