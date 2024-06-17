@@ -1858,8 +1858,7 @@
           },
           "column": {
             "type": "string",
-            "description": "Column ID into which the card is moved ",
-            "default": null
+            "description": "ID of the column into which the card is moved. The valid value id is one of the columns id belonging to the current board."
           },
 
           "example": {
@@ -2165,7 +2164,7 @@
 
           "priority": {
             "type": "string",
-            "description": "The priority level of the task",
+            "description": "The priority level of the task (case insensitive)",
             "enum": ["Low", "Medium", "High", "Without priority"],
             "default": "Without priority"
           },
@@ -2235,7 +2234,7 @@
 
           "priority": {
             "type": "string",
-            "description": "The priority level of the task",
+            "description": "The priority level of the task (case insensitive)",
             "enum": ["Low", "Medium", "High", "Without priority"],
             "default": "Without priority"
           },
