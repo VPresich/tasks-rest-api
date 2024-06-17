@@ -28,4 +28,14 @@ const taskSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
+taskSchema.pre('save', function (next) {
+  if (this.priority) {
+    const validPriorities = ['low', 'medium', 'high', 'without priority'];
+    if (!validPriorities.includes(this.priority.toLowerCase())) {
+      return next(new Error('Invalid priority value'));
+    }
+  }
+  next();
+});
+
 export default mongoose.model('Task', taskSchema);
