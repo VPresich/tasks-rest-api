@@ -8,19 +8,27 @@ const checkTask = ctrlWrapper(async (req, res, next) => {
   const { id: taskId } = req.params;
   const { id: userId } = req.user;
 
-  const task = await Task.findById(taskId).populate('column', '_id title');
-  if (!task) {
-    throw HttpError(404, 'Task not found');
-  }
+  let task = null;
+  let column = null;
+  let board = null;
 
-  const column = await Column.findById(task.column);
-  if (!column) {
-    throw HttpError(404, 'Column not found');
-  }
+  try {
+    task = await Task.findById(taskId).populate('column', '_id title');
+    if (!task) {
+      throw HttpError(404, 'Task not found');
+    }
 
-  const board = await Board.findById(column.board);
-  if (!board) {
-    throw HttpError(404, 'Board not found');
+    column = await Column.findById(task.column);
+    if (!column) {
+      throw HttpError(404, 'Column not found');
+    }
+
+    board = await Board.findById(column.board);
+    if (!board) {
+      throw HttpError(404, 'Board not found');
+    }
+  } catch {
+    throw HttpError(404, 'Board or column or task not found');
   }
 
   if (!userId.equals(board.owner)) {
