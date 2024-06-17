@@ -1812,7 +1812,7 @@
           },
           "priority": {
             "type": "string",
-            "description": "The priority level of the task",
+            "description": "The priority level of the task. Case insensitive.",
             "enum": ["Low", "Medium", "High", "Without priority"],
             "default": "Without priority"
           },
@@ -1846,7 +1846,7 @@
           },
           "priority": {
             "type": "string",
-            "description": "The priority level of the task",
+            "description": "The priority level of the task. Case insensitive.",
             "enum": ["Low", "Medium", "High", "Without priority"],
             "default": "Without priority"
           },
