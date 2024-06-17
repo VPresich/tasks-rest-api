@@ -2,6 +2,7 @@ import express from 'express';
 import validateBody from '../helpers/validateBody.js';
 import colsCtrl from '../controllers/colsCtrls/index.js';
 import checkColumnAndBoard from '../helpers/checkColumnAndBoard.js';
+import { taskSchemaCreate } from '../schemas/taskSchema.js';
 
 import authMiddleware from '../helpers/authMiddleware.js';
 
@@ -32,6 +33,7 @@ columnsRouter.post(
   '/:id/tasks',
   authMiddleware,
   checkColumnAndBoard,
+  validateBody(taskSchemaCreate),
   colsCtrl.createTaskForColumn
 );
 
