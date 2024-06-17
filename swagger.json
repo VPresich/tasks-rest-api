@@ -1763,9 +1763,9 @@
           },
           "background": {
             "type": "string",
-            "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
-            "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"],
-            "default": ""
+            "description": "Background id from existing backgrounds, by default: 'no-img'. This value should be one of the existing background IDs.",
+            "enum": ["665dab40d37019ad00137c09", "no-img"],
+            "default": "no-img"
           },
           "icon": {
             "type": "string",
@@ -1968,9 +1968,9 @@
           },
           "background": {
             "type": "string",
-            "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
-            "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"],
-            "default": ""
+            "description": "Background id from existing backgrounds, by default: 'no-img'. This value should be one of the existing background IDs.",
+            "enum": ["665dab40d37019ad00137c09", "no-img"],
+            "default": "no-img"
           },
           "icon": {
             "type": "string",
@@ -2030,9 +2030,9 @@
           },
           "background": {
             "type": "string",
-            "description": "Background id from existing backgrounds, by default: no image. This value should be one of the existing background IDs.",
-            "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"],
-            "default": ""
+            "description": "Background id from existing backgrounds, by default: 'no-img'. This value should be one of the existing background IDs.",
+            "enum": ["665dab40d37019ad00137c09", "no-img"],
+            "default": "no-img"
           },
           "icon": {
             "type": "string",
@@ -2084,8 +2084,9 @@
               },
               "background": {
                 "type": "string",
-                "description": "Background (image id)",
-                "enum": ["", "665dab40d37019ad00137c09", "theme00", "no-img"]
+                "description": "Background id from existing backgrounds, by default: 'no-img'. This value should be one of the existing background IDs.",
+                "enum": ["665dab40d37019ad00137c09", "no-img"],
+                "default": "no-img"
               },
               "icon": {
                 "type": "string",

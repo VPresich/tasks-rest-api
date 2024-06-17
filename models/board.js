@@ -9,7 +9,7 @@ const boardSchema = new mongoose.Schema(
 
     background: {
       type: String,
-      default: '',
+      default: 'no-img',
     },
 
     icon: {
