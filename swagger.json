@@ -15,19 +15,19 @@
   "tags": [
     {
       "name": "Users",
-      "description": "Users authorization endpoints. Register a new user using name, email, and password."
+      "description": "User authorization endpoints. Register a new user, log in a user, logout the user, refresh user session, and update user profile."
     },
     {
       "name": "Boards",
-      "description": "Create, delete, update"
+      "description": "Get boards for the user. Create, delete, and update boards."
     },
     {
       "name": "Columns",
-      "description": "Create, delete, update "
+      "description": "Get columns for the current board. Create, delete and update columns on the board."
     },
     {
       "name": "Tasks",
-      "description": "Create, delete, update"
+      "description": "Get tasks for the current board and columns. Create, delete, and update tasks within columns. Move tasks to another column within the current board."
     },
     {
       "name": "Help",
@@ -35,7 +35,7 @@
     },
     {
       "name": "Backgrounds",
-      "description": "Send email"
+      "description": "Get backgrounds"
     }
   ],
   "paths": {
@@ -693,7 +693,7 @@
       },
       "delete": {
         "tags": ["Boards"],
-        "summary": "Delete a board",
+        "summary": "Delete a board by ID",
         "description": "Deletes a board along with its columns and tasks if the user is authorized.",
         "parameters": [
           {
@@ -1280,7 +1280,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/TaskRequesForUpdate"
+                "$ref": "#/components/schemas/CreateTaskRequest"
               }
             }
           }
@@ -1366,7 +1366,7 @@
     "/tasks/{id}": {
       "patch": {
         "tags": ["Tasks"],
-        "summary": "Update a task",
+        "summary": "Update a task by ID or move one to another column within the current board.",
         "description": "Updates an existing task with new data.",
         "parameters": [
           {
@@ -1392,7 +1392,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "$ref": "#/components/schemas/TaskRequest"
+                "$ref": "#/components/schemas/UpdateTaskRequest"
               }
             }
           }
@@ -1472,7 +1472,7 @@
 
       "delete": {
         "tags": ["Tasks"],
-        "summary": "Delete a task",
+        "summary": "Delete a task by ID",
         "description": "Deletes an existing task by its ID.",
         "parameters": [
           {
@@ -1797,7 +1797,7 @@
         }
       },
 
-      "TaskRequest": {
+      "CreateTaskRequest": {
         "type": "object",
         "required": ["title"],
         "properties": {
@@ -1832,7 +1832,7 @@
         }
       },
 
-      "TaskRequesForUpdate": {
+      "UpdateTaskRequest": {
         "type": "object",
         "properties": {
           "title": {
@@ -1858,7 +1858,7 @@
           },
           "column": {
             "type": "string",
-            "description": "ID of the column into which the card is moved. The valid value id is one of the columns id belonging to the current board."
+            "description": "ID of the column into which the task is moved. The valid value id is one of the columns id belonging to the current board."
           },
 
           "example": {
