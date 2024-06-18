@@ -18,9 +18,7 @@ const deleteBoard = ctrlWrapper(async (req, res, next) => {
   }
 
   const columns = await Column.find({ board: id });
-  console.log(columns);
   const taskIds = columns.flatMap(column => column.cards);
-  console.log(taskIds);
   await Task.deleteMany({ _id: { $in: taskIds } });
   await Column.deleteMany({ board: id });
   await Board.findByIdAndDelete(id);
