@@ -32,7 +32,7 @@ const checkTask = ctrlWrapper(async (req, res, next) => {
   }
 
   if (!userId.equals(board.owner)) {
-    throw HttpError(403, 'You are not authorized to access this task');
+    throw HttpError(403, 'You are not the owner of this task');
   }
 
   req.task = task;

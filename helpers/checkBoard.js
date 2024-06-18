@@ -19,7 +19,7 @@ const checkBoard = ctrlWrapper(async (req, res, next) => {
   }
 
   if (!userId.equals(board.owner)) {
-    throw HttpError(403, 'You are not authorized to access this board');
+    throw HttpError(403, 'You are not the owner of this board');
   }
   req.board = board;
   next();

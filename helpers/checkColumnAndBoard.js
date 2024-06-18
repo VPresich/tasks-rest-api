@@ -23,7 +23,7 @@ const checkColumnAndBoard = ctrlWrapper(async (req, res, next) => {
   }
 
   if (!userId.equals(board.owner)) {
-    throw HttpError(403, 'You are not authorized to access this board');
+    throw HttpError(403, 'You are not the owner of this column');
   }
   req.column = column;
   req.board = board;

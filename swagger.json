@@ -381,7 +381,7 @@
             }
           },
           "409": {
-            "description": "Email in use",
+            "description": "Email in use for another user",
             "content": {
               "application/json": {
                 "schema": {
@@ -539,48 +539,48 @@
                 }
               }
             }
-          }
-        },
-        "401": {
-          "description": "Unauthorized (invaild or missing token)",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
-              }
-            }
-          }
-        },
-        "403": {
-          "description": "Forbidden ",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "description": "Error message"
-                  }
+          },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
                 }
-              },
-              "example": {
-                "message": "You are not authorized to get this board"
               }
             }
-          }
-        },
-        "404": {
-          "description": "Board not found",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "example": "Board not found"
+          },
+          "403": {
+            "description": "Forbidden ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "You are not the owner of this board"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Board not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Board not found"
+                    }
                   }
                 }
               }
@@ -655,7 +655,7 @@
             }
           },
           "403": {
-            "description": "Forbidden (user not authorized to delete the board)",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -668,7 +668,7 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to edit this board"
+                  "message": "You are not the owner of this board"
                 }
               }
             }
@@ -771,13 +771,13 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to remove this board"
+                  "message": "You are not the owner of this board"
                 }
               }
             }
           },
           "404": {
-            "description": "Not found (board not found)",
+            "description": "Board not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -867,13 +867,13 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to get this columns"
+                  "message": "You are not the owner of this board"
                 }
               }
             }
           },
           "404": {
-            "description": "Column not found",
+            "description": "Board not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -947,6 +947,17 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized (invaild or missing token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorUnauthorizedResponse"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -961,13 +972,13 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to create columns"
+                  "message": "You are not the owner of this board"
                 }
               }
             }
           },
           "404": {
-            "description": "Not found (board not found)",
+            "description": "Board not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -975,7 +986,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "description": "Error message"
+                      "example": "Board not found"
                     }
                   }
                 }
@@ -1055,13 +1066,13 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to get this columns"
+                  "message": "You are not the owner of this column"
                 }
               }
             }
           },
           "404": {
-            "description": "Column not found",
+            "description": "Column or board for this column not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1135,13 +1146,13 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to get this columns"
+                  "message": "You are not the owner of this column"
                 }
               }
             }
           },
           "404": {
-            "description": "Column not found",
+            "description": "Column or board for this column not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -1149,7 +1160,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Board not found"
+                      "example": "Board or column not found"
                     }
                   }
                 }
@@ -1227,7 +1238,7 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to get this columns"
+                  "message": "You are not the owner of this board"
                 }
               }
             }
@@ -1338,7 +1349,7 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to added tasks to this column"
+                  "message": "You are not the owner of this column"
                 }
               }
             }
@@ -1352,7 +1363,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Board not found"
+                      "example": "Board or column not found"
                     }
                   }
                 }
@@ -1367,7 +1378,7 @@
       "patch": {
         "tags": ["Tasks"],
         "summary": "Update a task by ID or move one to another column within the current board.",
-        "description": "Updates an existing task with new data.",
+        "description": "Update an existing task with new data.",
         "parameters": [
           {
             "in": "header",
@@ -1446,7 +1457,7 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to edit tasks to this column"
+                  "message": "You are not the owner of this task"
                 }
               }
             }
@@ -1533,7 +1544,7 @@
                   }
                 },
                 "example": {
-                  "message": "You are not authorized to delete tasks to this column"
+                  "message": "You are not the owner of this task"
                 }
               }
             }
