@@ -1378,7 +1378,7 @@
       "patch": {
         "tags": ["Tasks"],
         "summary": "Update a task by ID or move one to another column within the current board.",
-        "description": "Update an existing task with new data.",
+        "description": "Update an existing task with new data (if a column exists in the request body the task move to the column).",
         "parameters": [
           {
             "in": "header",
