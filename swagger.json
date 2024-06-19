@@ -395,6 +395,69 @@
       }
     },
 
+    "/users/google": {
+      "get": {
+        "summary": "Redirect to Google OAuth",
+        "description": "Redirects the user to Google's OAuth 2.0 authentication page.",
+        "tags": ["Users"],
+        "responses": {
+          "302": {
+            "description": "Redirect to Google OAuth",
+            "headers": {
+              "Location": {
+                "description": "URL to redirect the user to Google's OAuth 2.0 authentication page.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/google-redirect": {
+      "get": {
+        "summary": "Google OAuth Redirect",
+        "description": "Handles the redirection from Google's OAuth 2.0 authentication page and processes the authentication code.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "description": "Authorization code returned by Google OAuth 2.0",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to frontend with JWT token",
+            "headers": {
+              "Location": {
+                "description": "URL to redirect the user to the frontend application with JWT token.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ErrorInRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     "/boards": {
       "get": {
         "tags": ["Boards"],
