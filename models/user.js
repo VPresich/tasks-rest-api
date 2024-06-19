@@ -50,6 +50,12 @@ const userSchema = new mongoose.Schema(
       default: 'light',
       lowercase: true,
     },
+
+    googleId: {
+      type: String,
+      unique: true,
+      default: null,
+    },
   },
   { versionKey: false, timestamps: true }
 );

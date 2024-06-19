@@ -48,6 +48,7 @@ authRouter.patch(
   validateBody(themeSchema),
   usersCtrls.updateTheme
 );
+
 authRouter.get('/themes', authMiddleware, usersCtrls.getTheme);
 
 authRouter.patch(
@@ -57,5 +58,8 @@ authRouter.patch(
   validateBody(profileSchema),
   usersCtrls.updateProfile
 );
+
+authRouter.get('/google', authCtrls.googleAuth);
+authRouter.get('/google-redirect', authCtrls.googleRedirect);
 
 export default authRouter;
